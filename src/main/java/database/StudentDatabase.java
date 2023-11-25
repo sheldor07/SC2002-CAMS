@@ -24,6 +24,8 @@ import org.apache.poi.ss.usermodel.Sheet;
  * @author weiya
  */
 public class StudentDatabase extends UserDatabase {
+    
+    public final String COLUMN_POINTS = "Points";
    
     public StudentDatabase(String filePath){
         super(filePath);
@@ -50,7 +52,7 @@ public class StudentDatabase extends UserDatabase {
     Cell cell;
     String name, email, password;
     Faculty faculty;
-    int id;
+    int id, points;
    
     while(cellIterator.hasNext()) {
         cell = cellIterator.next();
@@ -64,11 +66,57 @@ public class StudentDatabase extends UserDatabase {
             faculty = Faculty.valueOf(cell.getStringCellValue());
             cell = cellIterator.next();
             password = cell.getStringCellValue().trim();
-            students.add(new Student(id, name,email,password,faculty));
+            cell = cellIterator.next();
+            points = (int) cell.getNumericCellValue();
+            students.add(new Student(id, name,email,password,faculty, points));
          
     }
    }
    return students;    
+    }
+    
+    public Student getStudentById(int studentId) {
+        
+    //Workbook wb = new XSSFWorkbook();
+    creationHelper = workbook.getCreationHelper();
+    Sheet sheet = workbook.getSheetAt(0);
+    
+    //Iterate through each rows from first sheet
+   Iterator<Row> rowIterator = sheet.iterator();
+   //Iterate one row to skip the column header
+   Row row = rowIterator.next();
+   
+   ArrayList<Student> students = new ArrayList();
+   while(rowIterator.hasNext()) {
+    row = rowIterator.next();
+
+     //For each row, iterate through each columns
+    Iterator<Cell> cellIterator = row.cellIterator();
+    Cell cell;
+    String name, email, password;
+    Faculty faculty;
+    int id, points;
+   
+    while(cellIterator.hasNext()) {
+        cell = cellIterator.next();
+
+            id = (int) cell.getNumericCellValue();
+            cell = cellIterator.next();
+            name = cell.getStringCellValue().trim();
+            cell = cellIterator.next();
+            email = cell.getStringCellValue().trim();
+            cell = cellIterator.next();
+            faculty = Faculty.valueOf(cell.getStringCellValue());
+            cell = cellIterator.next();
+            password = cell.getStringCellValue().trim();
+            cell = cellIterator.next();
+            points = (int) cell.getNumericCellValue();
+            if(studentId == id)
+                return new Student(id, name,email,password,faculty,points);
+         
+    }
+   }
+   return null;    
     }
     
     @Override

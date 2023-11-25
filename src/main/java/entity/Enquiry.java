@@ -11,75 +11,39 @@ package entity;
 public class Enquiry {
     
         private int id;
-	private Student student;
 	private String details;
-	private Camp camp;
+	private int campId;
 	private String answer;
-        private String askedBy;
-        private String answeredBy;
+        private int askedBy;
+        private int answeredBy;
         
-	public Enquiry(Student s,String d, Camp c) {
-		this.student = s;
-		this.details = d;
-		this.camp = c;
-		this.answer = "";
+	public Enquiry(int id, int campId, String details, String answer, int askedBy, int answeredBy) {
+		this.id = id;
+                this.campId = campId;
+                this.details = details;
+                this.answer = answer;
+                this.askedBy = askedBy;
+                this.answeredBy = answeredBy;
+		
+	}
+        
+        //this constructor will be used to get enquiries that have not been answered.
+        public Enquiry(int id, int campId, String details, int askedBy) {
+		this.id = id;
+                this.campId = campId;
+                this.details = details;
+                this.askedBy = askedBy;
+		
+	}
+        //this constructor will be used to create enquiries
+        public Enquiry(int campId, String details, int askedBy) {
+                this.campId = campId;
+                this.details = details;
+                this.askedBy = askedBy;
 		
 	}
 	
-	public String getDetails() {
-		return details;
-	}
-
-	public Camp getCamp() {
-		return camp;
-	}
-
-	public Student getStudent() {
-		return student;
-	}
-	
-	public void editDetails(String edit) {
-		this.details = edit;
-	}
-
-	public String getAnswer() {
-		return answer;
-	}
-
-	public void setAnswer(String answer) {
-		this.answer = answer;
-	}
-        
-        
-    /**
-     * @return the askedBy
-     */
-    public String getAskedBy() {
-        return askedBy;
-    }
-
-    /**
-     * @param askedBy the askedBy to set
-     */
-    public void setAskedBy(String askedBy) {
-        this.askedBy = askedBy;
-    }
-        
-            /**
-     * @return the answeredBy
-     */
-    public String getAnsweredBy() {
-        return answeredBy;
-    }
-
-    /**
-     * @param answeredBy the answeredBy to set
-     */
-    public void setAnsweredBy(String answeredBy) {
-        this.answeredBy = answeredBy;
-    }
-
-    /**
+           /**
      * @return the id
      */
     public int getId() {
@@ -92,6 +56,77 @@ public class Enquiry {
     public void setId(int id) {
         this.id = id;
     }
+        
+    /**
+     * @return the details
+     */
+    public String getDetails() {
+        return details;
+    }
+
+    /**
+     * @param details the details to set
+     */
+    public void setDetails(String details) {
+        this.details = details;
+    }
+
+    /**
+     * @return the campId
+     */
+    public int getCampId() {
+        return campId;
+    }
+
+    /**
+     * @param campId the campId to set
+     */
+    public void setCampId(int campId) {
+        this.campId = campId;
+    }
+
+    /**
+     * @return the answer
+     */
+    public String getAnswer() {
+        return answer;
+    }
+
+    /**
+     * @param answer the answer to set
+     */
+    public void setAnswer(String answer) {
+        this.answer = answer;
+    }
+
+    /**
+     * @return the askedBy
+     */
+    public int getAskedBy() {
+        return askedBy;
+    }
+
+    /**
+     * @param askedBy the askedBy to set
+     */
+    public void setAskedBy(int askedBy) {
+        this.askedBy = askedBy;
+    }
+
+    /**
+     * @return the answeredBy
+     */
+    public int getAnsweredBy() {
+        return answeredBy;
+    }
+
+    /**
+     * @param answeredBy the answeredBy to set
+     */
+    public void setAnsweredBy(int answeredBy) {
+        this.answeredBy = answeredBy;
+    }
+    
 
 	
 }

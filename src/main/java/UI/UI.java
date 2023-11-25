@@ -10,11 +10,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 
-public class MainUI {
+public class UI {
 	 User user;
          Scanner sc;
          SimpleDateFormat dateFormat;
-	MainUI(User user){
+	UI(User user){
         this.user = user;
         sc = new Scanner(System.in);
         dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -30,10 +30,32 @@ public class MainUI {
                valid = true;
            }catch(Exception e){
                System.out.println("Please Enter an integer");
+               
            }
            }while(!valid);
          
             return someInt;
+        }
+        
+        public String stringValidator(String printMessage){
+            String someString = "";
+            boolean valid = false;
+            do{
+           try{
+               
+               System.out.println(printMessage);
+               someString = sc.nextLine();
+               if(!someString.isBlank() && !someString.isEmpty())
+               valid = true;
+               else
+                   System.out.println("Please enter a proper input");
+           }catch(Exception e){
+               System.out.println("Please enter a proper input");
+               
+           }
+           }while(!valid);
+         
+            return someString;
         }
         
         public Date dateValidator(String message){

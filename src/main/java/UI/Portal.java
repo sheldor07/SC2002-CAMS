@@ -4,9 +4,16 @@
  */
 package UI;
 import controller.CampController;
+import controller.CampParticipantController;
 import controller.UserController;
 import database.CampDatabase;
+import database.CampParticipantDatabase;
+import database.EnquiryDatabase;
+import database.StudentDatabase;
 import entity.Camp;
+import entity.CampCommittee;
+import entity.CampParticipant;
+import entity.Enquiry;
 import entity.Staff;
 import entity.Student;
 import entity.User;
@@ -20,47 +27,107 @@ import java.util.Scanner;
  */
 public class Portal {
     UserUI userUI;
+    boolean logout = false;
+    UserController userC;
     
     public void start() throws IOException{
         System.out.println("Welcome to Camp Application and Management System (CAMs)");
+        do{
+         logout = false;
+         userC = new UserController();
+         User user = userC.login();
+        while(!logout){//if user == null after successfully, and its null, he needs to relogin because password changed.
         
-        UserController userC = new UserController();
-        User user = userC.login();
         userUI = new UserUI(user);
-
-//        //ignore this part for now
-//        
-        if(user instanceof Student){
+        
+        if(user != null){
+            System.out.println("Welcome "+user.getName());
             
-            displayStudentPage((Student)user);
+            if(user instanceof Student){
+                    user = userC.checkIfStudentIsCampCommittee((Student)user);
+                    
+                    if(user instanceof CampCommittee){
+                        displayCampCommitteePage((CampCommittee)user);
+                    }
+                    else{
+                        displayStudentPage((Student)user);
+                    }
+            }
+            else{
+                displayStaffPage((Staff)user);
+            
         }
-        else{
-            displayStaffPage((Staff)user);
+        //once application runs, we cannot exit. should discuss and specify how one logs out.
         }
+        }
+        }while(true);
+        
     }
     
     public void displayStudentPage(User user){
         
-        //...
+            CampUI campUI = new CampUI(user);
+            EnquiryUI enquiryUI = new EnquiryUI(user);
+            int input = 0;
+            do{
+            
+            input = userUI.displayStudentMenu();
+           
+           if(input == 1)
+              campUI.showAvailableCampsForStudent(user);
+           
+           else if(input == 2){
+               boolean userSignedUpAsCommittee = campUI.registerCampUI(); 
+               if(userSignedUpAsCommittee){
+                   break;
+               }
+               
+           }
+           else if(input == 3){
+               campUI.showRegisteredCamps();
+           }
+           else if(input == 4){
+               campUI.withdrawCampUI();
+           }
+           else if(input == 5){
+              enquiryUI.submitEnquiryUI();
+           }
+           else if(input == 6){
+               enquiryUI.printListOfProcessedEnquiry();
+               enquiryUI.printListOfUnprocessedEnquiry();
+           }
+           else if(input == 7){
+               enquiryUI.editEnquiryUI();
+           }
+           else if(input == 8){
+               enquiryUI.deleteEnquiryUI();
+           }
+
+           else if(input == 9){
+               userC.changePassword();
+               break;
+           }
+           else if(input == 10){
+               logout = true;
+               System.out.println("Thank you and see you again.");
+               break;
+           }
+           else{
+               System.out.println("Please enter a valid input");
+           }
+
+          }while(input != 11);
         
     }
     
-    public void displayStaffPage(User user) throws IOException{
-        System.out.println("Welcome "+user.getName());
-        int input = 0;
-        Scanner sc = new Scanner(System.in);
-        CampUI campUI = new CampUI(user);
-
-        do{
-           System.out.println("(1) Create camp");
-           System.out.println("(2) View all camps");
-           System.out.println("(3) View camps created by you");
-           System.out.println("(4) Edit camps created by you");
-           System.out.println("(5) View your camp enquires");
-           System.out.println("(6) View suggestions for your camp");
-           System.out.println("(7) Exit");
-           System.out.print("Enter the number of your choice: ");
-           input = sc.nextInt();
+    public void displayStaffPage(User user){
+            
+            CampUI campUI = new CampUI(user);
+            EnquiryUI enquiryUI = new EnquiryUI(user);
+            int input = 0;
+            do{
+            
+            input = userUI.displayStaffMenu();
            
            if(input == 1)
            {    int result = campUI.showCreateCamp();
@@ -77,9 +144,28 @@ public class Portal {
                campUI.printCampCreatedByUser(user);
            }
            else if(input == 4){
-               campUI.editCampUI(user);
+               campUI.editCampUI();
            }
            else if(input == 5){
+              enquiryUI.printListOfUserEnquiry();
+           }
+           else if(input == 6){
+               enquiryUI.replyEnquiryUI();
+           }
+           else if(input == 7){
+               
+           }
+           else if(input == 8){
+               
+           }
+           else if(input == 9){
+               
+           }
+           else if(input == 10){
+               
+           }
+           else if(input == 11){
+               logout = true;
                System.out.println("Thank you and see you again.");
                break;
            }
@@ -87,10 +173,88 @@ public class Portal {
                System.out.println("Please enter a valid input");
            }
 
-          }while(input != 5);
+          }while(input != 11);
         
 
     }
+    
+     public void displayCampCommitteePage(User user){
+            
+             CampUI campUI = new CampUI(user);
+            EnquiryUI enquiryUI = new EnquiryUI(user);
+            int input = 0;
+            do{
+            
+            input = userUI.displayCampCommitteeMenu();
+           
+           if(input == 1)
+              campUI.showAvailableCampsForStudent(user);
+           
+           else if(input == 2){
+               boolean userSignedUpAsCommittee = campUI.registerCampUI(); 
+               if(userSignedUpAsCommittee){
+                   break;
+               }
+               
+           }
+           else if(input == 3){
+               campUI.showRegisteredCamps();
+           }
+           else if(input == 4){
+               campUI.withdrawCampUI();
+           }
+           else if(input == 5){
+              enquiryUI.submitEnquiryUI();
+           }
+           else if(input == 6){
+               enquiryUI.printListOfProcessedEnquiry();
+               enquiryUI.printListOfUnprocessedEnquiry();
+           }
+           else if(input == 7){
+               enquiryUI.editEnquiryUI();
+           }
+           else if(input == 8){
+               enquiryUI.deleteEnquiryUI();
+           }
+           else if (input == 9){
+               enquiryUI.printListOfUserEnquiry();
+           }
+           else if (input == 10){
+               enquiryUI.replyEnquiryUI();
+           }
+           else if (input == 11){
+               
+           }
+           else if (input == 12){
+               
+           }
+           else if (input == 13){
+               
+           }
+           else if (input == 14){
+               
+           }
+           else if (input == 15){
+               
+           }
+           else if(input == 16){
+               userC.changePassword();
+               break;
+           }
+           else if(input == 17){
+               logout = true;
+               System.out.println("Thank you and see you again.");
+               break;
+           }
+           else{
+               System.out.println("Please enter a valid input");
+           }
+
+          }while(input != 11);
+        
+
+    }
+   
     
     
     

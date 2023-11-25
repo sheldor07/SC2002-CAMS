@@ -15,6 +15,12 @@ import java.util.Scanner;
  */
 public class UserDatabase extends Database{
     
+    public final String COLUMN_NAME = "Name";
+    public final String COLUMN_ID = "ID";
+    public final String COLUMN_EMAIL = "Email";
+    public final String COLUMN_PASSWORD = "Password";
+    public final String COLUMN_FACULTY = "Faculty";
+    
     
     public UserDatabase(String filePath){
         super(filePath);
@@ -23,18 +29,7 @@ public class UserDatabase extends Database{
     
     boolean changePassword(User user, String newPassword)
     {      
-        
-        boolean result = editRow(user.getId(), "Password", newPassword);
-        
-        if(result == true){
-            System.out.println("Password Changed succesfully.");
-            return true;
-        }  
-           System.out.println("An error has occured in the password change");
-           return false;           
-        }
-   
-        
+        return editRow(user.getId(), COLUMN_PASSWORD, newPassword);
     }
     
-
+}
