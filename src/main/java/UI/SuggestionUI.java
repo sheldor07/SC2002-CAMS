@@ -4,10 +4,16 @@
  */
 package UI;
 
+import entity.User;
+
 /**
  *
  * @author weiya
  */
-public class SuggestionUI {
+public class SuggestionUI extends UI{
+    
+    public SuggestionUI(User user) {
+        super(user);
+    }
     
 }
