@@ -9,6 +9,8 @@ import database.StudentDatabase;
 import database.UserDatabase;
 import database.StaffDatabase;
 import database.StudentDatabase;
+import entity.CampCommittee;
+import entity.CampParticipant;
 import entity.Staff;
 import entity.Student;
 import entity.User;
@@ -56,6 +58,7 @@ public class UserController {
         boolean successful = false;
         
         while(!successful){
+        int wrongPassword = 0;
         System.out.print("Enter your UserID: ");
         userID = sc.nextLine();
         System.out.print("Enter your Password: ");
@@ -67,16 +70,22 @@ public class UserController {
             String email = student.getEmail();
             String regex = "(@e.ntu.edu.sg;)$";
             String processedEmail = email.replaceAll(regex,"");
-            if(processedEmail.equals(userID) && student.getPassword().equals(password)){
+            if(processedEmail.equals(userID)){
+                wrongPassword = 1;
+            if(student.getPassword().equals(password)){
                System.out.println("Login successful!");
+                    
+                    user = checkIfStudentIsCampCommittee(student);
                
-                user = student;
                     if(user.getPassword().equals("password")){
                     System.out.println("You are required to change your default password: ");
-                    changePassword();
+                    return changePassword();
             }
                     return user;
+             }
+            
         }
+        
         }
         
         for(Staff staff: staffs){
@@ -88,28 +97,56 @@ public class UserController {
             String regex2 = "(@ntu.edu.sg)$";
             String processedEmail2 = email.replaceAll(regex2,"");
             
-            if((processedEmail1.equals(userID) || processedEmail2.equals(userID)) && staff.getPassword().equals(password)){
+            if((processedEmail1.equals(userID) || processedEmail2.equals(userID))){
+                wrongPassword = 1;
+            if(staff.getPassword().equals(password)){
                 user = staff;
                System.out.println("Login successful!");
                     if(user.getPassword().equals("password")){
                     System.out.println("You are required to change your default password: ");
-                    changePassword();
+                    return changePassword();
                
             }
                     return user;
         }       
+            }
            }
         
+        if(wrongPassword == 1)
+          System.out.println("Wrong Password. Please try again.");
+        else
           System.out.println("Login unsuccessful, try again");
 
-        
-    
 
     }
         return null;
     }
     
-    int changePassword(){
+        public User checkIfStudentIsCampCommittee(Student student){
+            //checking campparticipant database to see if user is campcommitee
+        CampParticipantController campParticipantController = new CampParticipantController();
+         ArrayList<CampParticipant> campParticipants = campParticipantController.getAllParticipants();
+         
+         for(CampParticipant c : campParticipants)
+         {    
+             if(c.getStudentId() == student.getId() && c.isCampCommittee()){                 
+                 return new CampCommittee(student.getId(),student.getName(),student.getEmail(),student.getPassword(),student.getFaculty());
+                 
+             }
+         }
+             
+        
+        return student;
+        
+    }
+    
+    public User logout(){
+        System.out.println("Logged out.");
+        return null;
+        
+    }
+    
+    public User changePassword(){
 
     //make it strong password?
     Scanner sc = new Scanner(System.in);
@@ -122,24 +159,26 @@ public class UserController {
 
         if(newPassword.equals(confirmNewPassword)){
 
-            int result = 0;
+            boolean result = false;
 
             if(user instanceof Student)
-             studentDatabase.changePassword(user, confirmNewPassword);
+             result = studentDatabase.changePassword(user, confirmNewPassword);
             else if(user instanceof Staff)
-             staffDatabase.changePassword(user, confirmNewPassword);
+             result = staffDatabase.changePassword(user, confirmNewPassword);
 
-            if(result == 1){
+            if(result == true){
                 System.out.println("Password Changed succesfully.");
+                System.out.println("Please re-login to validate again.");
+                return logout();
             }  
 
-            break;
+//            break;
         }
         else{
             System.out.println("The password does not match.");
         }
     }
-    return 0;
+    return null;
 }
     
 }

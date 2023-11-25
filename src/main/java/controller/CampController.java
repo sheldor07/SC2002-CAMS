@@ -9,6 +9,7 @@ import entity.Camp;
 import java.util.Date;
 
 import entity.Faculty;
+import entity.User;
 import java.util.ArrayList;
 
 public class CampController {
@@ -28,11 +29,18 @@ public class CampController {
         public ArrayList<Camp> getCampsByStaff(int staffId){
             return campDatabase.getCampsByStaffInCharge(staffId);
         }
+        
+        public Camp getCampById(int Id){
+            return campDatabase.getCampsById(Id);
+        }
+        
+        public ArrayList<Camp> getCampsByFaculty(User user){
+            return campDatabase.getCampsByUserFaculty(user);
+        }
     
         public int createCamp(Camp camp){
             ArrayList<Camp> camps = campDatabase.getList();
-            int noOfCamps = 0;
-            int max = 1;
+            int max = 0;
             for(Camp c : camps){
                    if(c.getId() > max)
                        max = c.getId();
@@ -43,21 +51,6 @@ public class CampController {
             
             return result;
         }
-
-	public boolean registerAsParticipant(int id) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean registerAsCommittee(int id) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean withdraw(int id, int campId) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	public boolean changeName(int campId, String choice) {
            return campDatabase.editRow(campId, campDatabase.COLUMN_CAMPNAME, choice);

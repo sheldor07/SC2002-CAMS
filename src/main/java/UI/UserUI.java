@@ -5,8 +5,10 @@
 package UI;
 
 import controller.CampController;
+import controller.CampParticipantController;
 import controller.UserController;
 import entity.Camp;
+import entity.CampParticipant;
 import entity.Faculty;
 import entity.User;
 import java.text.ParseException;
@@ -19,60 +21,100 @@ import java.util.Scanner;
  *
  * @author weiya
  */
-public class UserUI extends MainUI{
+public class UserUI extends UI{
    private UserController userController;
    private CampController campController;
+   private CampParticipantController campParticipantController;
+   public Scanner sc;
     
     public UserUI(User user){
         super(user);
         userController = new UserController();
         campController = new CampController();
+        campParticipantController = new CampParticipantController();
+        sc = new Scanner(System.in);
     }
     
-//    public int displayStaffPage(){
-//        
-//        System.out.println("Welcome "+user.getName());
-//        int input = 0;
-//        Scanner sc = new Scanner(System.in);
-//        
-//        do{
-//           System.out.println("(1) Create camp");
-//           System.out.println("(2) View all camps");
-//           System.out.println("(3) View camps created by you");
-//           System.out.println("(4) View your camp enquires");
-//           System.out.println("(5) View suggestions for your camp");
-//           System.out.println("(6) Exit");
-//           System.out.print("Enter the number of your choice: ");
-//           input = sc.nextInt();
-//           
-//           if(input == 1)
-//           {
-//           if(result == 1)
-//               System.out.println("Camp created succesfully.");
-//           }
-//           
-//           else if(input == 2){
-//               ArrayList<Camp> camps = campController.getCamps();
-//               
-//               
-//           }
-//           else if(input == 3){
-//               
-//           }
-//           else if(input == 4){
-//               
-//           }
-//           else if(input == 5){
-//               
-//           }
-//           else{
-//               System.out.println("Please enter a valid input");
-//           }
-//
-//          }while(input != 5);
-//        
-//        return input;
-//    }
+    public int displayStaffMenu(){
+        
+        System.out.println("Welcome "+user.getName());
+        int input = 0;
+            
+            String message = "(1) Create camp\n"
+                    + "(2) View all camps\n"
+                    + "(3) View camps created by you\n"
+                    + "(4) Edit camps created by you\n"
+                    + "(5) View your camp enquires\n"
+                    + "(6) Reply your camp enquires\n"
+                    + "(7) View suggestions for your camp\n"
+                    + "(8) Approve/Reject suggestions for your camp\n"
+                    + "(9) Generate student list report for your camp\n"
+                    + "(10) Generate performance report for your camp\n"
+                    + "(11) Generate enquiry report for your camp\n"
+                    + "(12) Exit\n"
+                    + "Enter the number of your choice: ";
+           
+           
+           input = integerValidator(message);
+        
+           return input;
+    }
+    
+    public int displayStudentMenu(){
+                int input = 0;
+            
+            String message = "(1) View available camps for sign up\n"
+                            + "(2) Register for a camp\n"
+                            + "(3) View registered camps\n"
+                            + "(4) Request withdrawal from camp\n"
+                            + "(5) Submit enquires for a camp\n"
+                            + "(6) View submitted enquiry for a camp\n"
+                            + "(7) Edit submitted unanswered enquiry for a camp\n"
+                            + "(8) Delete submitted unanswered enquiry for a camp\n"
+                            + "(9) Change password\n"
+                            + "(10) Exit\n"
+                            + "Enter the number of your choice: ";
+
+           
+           input = integerValidator(message);
+        
+           return input;
+    }
+   
+    
+        public int displayCampCommitteeMenu(){
+        
+        int input = 0;
+            
+     String message = "(1) View available camps for sign up\n"
+                    + "(2) Register for a camp\n"
+                    + "(3) View registered camps\n"
+                    + "(4) Request withdrawal from camp\n"
+                    + "(5) Submit enquires for a camp\n"
+             
+                    + "(6) View submitted enquiry for a camp\n"
+                    + "(7) Edit submitted unanswered enquiry for a camp\n"
+                    + "(8) Delete submitted unanswered enquiry for a camp\n"
+             
+                    + "(9) View enquiries for your camp\n"
+                    + "(10) Reply enquiries for your camp\n"
+
+            //
+                    + "(11) Submit suggestions for a camp\n"
+                    + "(12) View submitted camp suggestions\n"
+                    + "(13) Edit submitted camp suggestions\n"
+                    + "(14) Delete submitted camp suggestions\n"
+            //
+                    + "(15) Generate report for your camp\n"
+                    + "(16) Change password\n"
+                    + "(17) Exit\n"
+                    + "Enter the number of your choice: ";
+           
+           
+           input = integerValidator(message);
+        
+           return input;
+    }
     
     public void displayUserInfo(){
         System.out.println("Name: "+user.getName());

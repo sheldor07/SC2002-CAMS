@@ -5,10 +5,10 @@
 package database;
 
 import entity.Camp;
-import entity.CampCommittee;
 import entity.CampInformation;
 import entity.Faculty;
 import entity.Staff;
+import entity.User;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -48,6 +48,65 @@ public class CampDatabase extends Database{
         super(filePath);
     }
     
+        public Camp getCampsById(int campId){
+        
+         Sheet sheet = workbook.getSheetAt(0);
+    
+    //Iterate through each rows from first sheet
+   Iterator<Row> rowIterator = sheet.iterator();
+   //Iterate one row to skip the column header
+   Row row = rowIterator.next();
+   
+   ArrayList<Camp> camps = new ArrayList();
+
+   while(rowIterator.hasNext()) {
+    row = rowIterator.next();
+     //For each row, iterate through each columns
+    Iterator<Cell> cellIterator = row.cellIterator();
+    Cell cell;
+    String name,location,description;
+    int staffInCharge, totalSlots, id, campCommitteeSlots;
+    boolean visibility;
+    Date startDate = null, endDate = null, registrationDeadline = null; 
+    Faculty faculty;    
+    while(cellIterator.hasNext()) {
+        cell = cellIterator.next();
+//        System.out.println(cell.getStringCellValue());
+            
+            id = (int) cell.getNumericCellValue();
+            cell = cellIterator.next();
+            name = cell.getStringCellValue().trim();
+            cell = cellIterator.next();
+            startDate = cell.getDateCellValue();
+            cell = cellIterator.next();
+            endDate = cell.getDateCellValue();
+            cell = cellIterator.next();
+            registrationDeadline = cell.getDateCellValue();
+            cell = cellIterator.next();
+            faculty = Faculty.valueOf(cell.getStringCellValue());
+            cell = cellIterator.next();
+            location = cell.getStringCellValue().trim();
+            cell = cellIterator.next();
+            totalSlots = (int) cell.getNumericCellValue();
+            cell = cellIterator.next();
+            campCommitteeSlots = (int) cell.getNumericCellValue();
+            cell = cellIterator.next();
+            description = cell.getStringCellValue().trim();
+            cell = cellIterator.next();
+            staffInCharge = (int) cell.getNumericCellValue();
+            cell = cellIterator.next();
+            visibility = (boolean) cell.getBooleanCellValue();
+
+            //camp committee constructor is null for now.
+            if(id == campId)
+                return new Camp(id,name,location, description, startDate,endDate,registrationDeadline,totalSlots, campCommitteeSlots, staffInCharge, faculty,visibility);
+//        public Camp(int id, String name, String location, String description, Date startDate, Date endDate, Date closingDate, int participantSlots, int campCommSlots, Staff staffInCharge, Faculty facultyOpenTo) {
+
+    }
+   }
+        return null;
+    }
+    
     public ArrayList getCampsByStaffInCharge(int staffId){
         
          Sheet sheet = workbook.getSheetAt(0);
@@ -69,7 +128,6 @@ public class CampDatabase extends Database{
     boolean visibility;
     Date startDate = null, endDate = null, registrationDeadline = null; 
     Faculty faculty;
-    ArrayList<CampCommittee> campCommittees;
     
     while(cellIterator.hasNext()) {
         cell = cellIterator.next();
@@ -107,6 +165,66 @@ public class CampDatabase extends Database{
     }
    }
         return camps;
+    }
+    
+    //This method will take in user object and return camps that is same as his faculty or open to NTU.
+    public ArrayList getCampsByUserFaculty(User user) {
+        
+        Sheet sheet = workbook.getSheetAt(0);
+    
+    //Iterate through each rows from first sheet
+   Iterator<Row> rowIterator = sheet.iterator();
+   //Iterate one row to skip the column header
+   Row row = rowIterator.next();
+   
+   ArrayList<Camp> camps = new ArrayList();
+
+   while(rowIterator.hasNext()) {
+    row = rowIterator.next();
+     //For each row, iterate through each columns
+    Iterator<Cell> cellIterator = row.cellIterator();
+    Cell cell;
+    String name,location,description;
+    int staffInCharge, totalSlots, id, campCommitteeSlots;
+    boolean visibility;
+    Date startDate = null, endDate = null, registrationDeadline = null; 
+    Faculty faculty;
+
+    while(cellIterator.hasNext()) {
+        cell = cellIterator.next();
+            
+            id = (int) cell.getNumericCellValue();
+            cell = cellIterator.next();
+            name = cell.getStringCellValue().trim();
+            cell = cellIterator.next();
+            startDate = cell.getDateCellValue();
+            cell = cellIterator.next();
+            endDate = cell.getDateCellValue();
+            cell = cellIterator.next();
+            registrationDeadline = cell.getDateCellValue();
+            cell = cellIterator.next();
+            faculty = Faculty.valueOf(cell.getStringCellValue());
+            cell = cellIterator.next();
+            location = cell.getStringCellValue().trim();
+            cell = cellIterator.next();
+            totalSlots = (int) cell.getNumericCellValue();
+            cell = cellIterator.next();
+            campCommitteeSlots = (int) cell.getNumericCellValue();
+            cell = cellIterator.next();
+            description = cell.getStringCellValue().trim();
+            cell = cellIterator.next();
+            staffInCharge = (int) cell.getNumericCellValue();
+            cell = cellIterator.next();
+            visibility = (boolean) cell.getBooleanCellValue();
+            //camp committee constructor is null for now.
+            if(user.getFaculty() == faculty || Faculty.NTU == faculty)
+            camps.add(new Camp(id,name,location, description, startDate,endDate,registrationDeadline,totalSlots, campCommitteeSlots, staffInCharge, faculty, visibility));
+
+    }
+   }
+        return camps;
+    
+    
     }
     
     //overload
@@ -204,7 +322,6 @@ public class CampDatabase extends Database{
     boolean visibility;
     Date startDate = null, endDate = null, registrationDeadline = null; 
     Faculty faculty;
-    ArrayList<CampCommittee> campCommittees;
     
     while(cellIterator.hasNext()) {
         cell = cellIterator.next();

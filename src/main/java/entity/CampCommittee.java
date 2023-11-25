@@ -9,9 +9,9 @@ package entity;
  * @author weiya
  */
 public class CampCommittee extends Student{
-    
-    public CampCommittee(int id,String name, String userID, String password, Faculty faculty) {
-        super(id,name, userID, password, faculty);
+
+    public CampCommittee(int id,String name,String email, String password, Faculty faculty) {
+        super(id,name, email, password, faculty);
     }
     
 }

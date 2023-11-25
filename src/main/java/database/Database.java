@@ -102,9 +102,7 @@ public class Database implements iDatabase{
 
          }
         }
-        
-//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    return false;
+        return false;
     }
 
     @Override
@@ -162,10 +160,13 @@ public class Database implements iDatabase{
                }
                
                else if(newCellValue instanceof Faculty){
-                   cell.setCellValue((String)newCellValue);
+                   cell.setCellValue(((Faculty)(newCellValue)).toString());
                }
-               else{
+               else if(newCellValue instanceof Boolean){
+                   cell.setCellValue((Boolean)newCellValue);
                }
+               
+
 
                FileOutputStream fileOut;
                 try {
