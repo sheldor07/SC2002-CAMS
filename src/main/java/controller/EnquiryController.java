@@ -40,7 +40,7 @@ public class EnquiryController {
         }
         
         public boolean submitEnquiry(Enquiry enquiry) {
-                ArrayList<Enquiry> enquiries = enquiryDatabase.getList();
+            ArrayList<Enquiry> enquiries = enquiryDatabase.getList();
             int max = 0;
             for(Enquiry e : enquiries){
                    if(e.getId() > max)

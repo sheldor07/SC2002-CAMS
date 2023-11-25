@@ -270,7 +270,6 @@ public class CampUI extends UI {
                 //specific number validator.
 		while(num < 1 || num > 10) {//Loops error msg + re-prompt if user picks anything outside of the range of choices
 			System.out.println("Incorrect input. Please try again.");
-			choice = s.nextLine();
 			num = integerValidator(message);
 		}
 		int input = 0;

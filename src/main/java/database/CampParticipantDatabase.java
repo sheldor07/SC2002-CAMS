@@ -163,6 +163,47 @@ public class CampParticipantDatabase extends Database {
     
     }
     
+    
+    public CampParticipant getCommitteeByStudentId(int sID) {
+        
+        Sheet sheet = workbook.getSheetAt(0);
+    
+    //Iterate through each rows from first sheet
+   Iterator<Row> rowIterator = sheet.iterator();
+   //Iterate one row to skip the column header
+   Row row = rowIterator.next();
+   
+   ArrayList<CampParticipant> participants = new ArrayList();
+
+   while(rowIterator.hasNext()) {
+    row = rowIterator.next();
+     //For each row, iterate through each columns
+    Iterator<Cell> cellIterator = row.cellIterator();
+    Cell cell;
+    int campParticipantRowID, campId, studentId, staffInChargeId; 
+    boolean isCampComittee;
+    while(cellIterator.hasNext()) {
+        cell = cellIterator.next();
+            
+            campParticipantRowID = (int) cell.getNumericCellValue();
+            cell = cellIterator.next();
+            campId = (int) cell.getNumericCellValue();
+            cell = cellIterator.next();
+            studentId = (int) cell.getNumericCellValue();
+            cell = cellIterator.next();
+            staffInChargeId = (int) cell.getNumericCellValue();
+            cell = cellIterator.next();
+            isCampComittee = (boolean) cell.getBooleanCellValue();
+            if(sID == studentId && isCampComittee == true)
+            return new CampParticipant(campParticipantRowID,campId,studentId,staffInChargeId,isCampComittee);
+            
+
+    }
+   }
+        return null;
+    
+    
+    }
 
     
 }

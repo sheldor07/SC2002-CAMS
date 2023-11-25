@@ -47,11 +47,11 @@ public class UserUI extends UI{
                     + "(5) View your camp enquires\n"
                     + "(6) Reply your camp enquires\n"
                     + "(7) View suggestions for your camp\n"
-                    + "(8) Approve suggestions for your camp\n"
+                    + "(8) Approve/Reject suggestions for your camp\n"
                     + "(9) Generate student list report for your camp\n"
                     + "(10) Generate performance report for your camp\n"
                     + "(11) Generate enquiry report for your camp\n"
-                    + "(11) Exit\n"
+                    + "(12) Exit\n"
                     + "Enter the number of your choice: ";
            
            

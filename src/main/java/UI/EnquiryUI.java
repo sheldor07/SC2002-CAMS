@@ -162,55 +162,7 @@ public class EnquiryUI extends UI{
 		//TODO RETURN TO ENQUIRY MENU
 	}
         
-	
-	public void studentUI() {//Menu letting them view their enquiries, and edit/delete those that are not processed
-		//TODO
-		Scanner s = new Scanner(System.in);
-		String choice; 
-		
-		System.out.println("Welcome to Enquiry Menu. Please select your desired option by entering the respective number.");
-		System.out.println("1) View Enquiries");
-		System.out.println("2) Edit Enquiries");
-		System.out.println("3) Delete Enquiries");
-		System.out.println("4) Exit");
-		
-		choice = s.nextLine();
-		
-		while(choice != "1" && choice != "2" && choice != "3" && choice != "4") {
-			System.out.println("Invalid input. Please try again.");
-			System.out.println("Welcome to Enquiry Menu. Please select your desired option by entering the respective number.");
-			System.out.println("1) View Enquiries");
-			System.out.println("2) Edit Enquiries");
-			System.out.println("3) Delete Enquiries");
-			System.out.println("4) Exit");
-			
-			choice = s.nextLine();	
-		}
-		
-		int num = Integer.parseInt(choice);
-		
-		switch(num) {
-		
-		case 1:
-			printListOfUnprocessedEnquiry();
-			break;
-			
-		case 2:
-			editEnquiryUI();
-			break;
-			
-		case 3:
-			deleteEnquiryUI();
-			break;
-			
-		case 4:
-			//Go back to main menu but idk how to implement that?
-			break;
-			
-		
-		}
-	}
-        
+
         public void submitEnquiryUI(){
 
             // we are reusing one of CampUI method to show available camp for a particular student.
@@ -280,12 +232,12 @@ public class EnquiryUI extends UI{
 			String message = "Are you sure you want to delete Enquiry " + selection + "? Enter 'Y' to confirm, or 'N' to cancel.";
 			String choice = stringValidator(message);
 			
-			while(!choice.equals("Y") && !choice.equals("N")) {
+			while(!choice.toUpperCase().equals("Y") && !choice.toUpperCase().equals("N")) {
 				System.out.println("Incorect input. Please try again.");
 				choice = stringValidator(message);
 			}
 			
-			if(choice.equals("Y")) {//Delete enquiry
+			if(choice.toUpperCase().equals("Y")) {//Delete enquiry
 				System.out.println("Deleting enquiry...");
 				
 				if(enquiryController.delete(selectedEnquiry)) {
@@ -296,7 +248,7 @@ public class EnquiryUI extends UI{
 				}
 			}
 			
-			else if(choice.equals("N")) {//Cancel process
+			else if(choice.toUpperCase().equals("N")) {//Cancel process
 				System.out.println("Cancelling deletion process...");
 			}
 		}
@@ -331,12 +283,12 @@ public class EnquiryUI extends UI{
 			message = "Are you sure you would like to replace your old enquiry with this? Enter 'Y' to confirm, and 'N' to cancel.";
 			String choice = stringValidator(message);
 			
-			while(!choice.equals("Y") && !choice.equals("N")) {
+			while(!choice.toUpperCase().equals("Y") && !choice.toUpperCase().equals("N")) {
 				System.out.println("Incorect input. Please try again.");
 				choice = stringValidator(message);
 			}
 			
-			if(choice.equals("Y")) {//Edit process confirmed
+			if(choice.toUpperCase().equals("Y")) {//Edit process confirmed
 				System.out.println("Changing your enquiry...");
 				selectedEnquiry.setDetails(edittedDetails);
 				
@@ -347,7 +299,7 @@ public class EnquiryUI extends UI{
 					System.out.println("Enquiry change unsuccessful.");
 				}
 			}
-			else if(choice.equals("N")) {//Edit process cancelled
+			else if(choice.toUpperCase().equals("N")) {//Edit process cancelled
 				System.out.println("Cancelling edit process...");
 			}
 			
@@ -388,9 +340,10 @@ public class EnquiryUI extends UI{
                                 
 				if(enquiryController.editEnquiryAnswer(selectedEnquiry)){
 					System.out.println("Reply succesfully sent!");
-                                        
+                                        if(user instanceof CampCommittee){
                                         StudentController controller = new StudentController();
                                         controller.addStudentPoint(user.getId());
+                                        }
 				}
 				else {
 					System.out.println("Reply is unsuccessful.");

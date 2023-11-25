@@ -33,6 +33,11 @@ public class CampParticipantController {
    public ArrayList<CampParticipant> getListByStudentId(int studentId){
        return campParticipantDatabase.getListByStudentId(studentId);
    }
+   public CampParticipant getCommitteeByStudentId(int studentId){
+       return campParticipantDatabase.getCommitteeByStudentId(studentId);
+   }
+   
+   
    
    public boolean registerAsParticipant(User user, Camp camp) {
        

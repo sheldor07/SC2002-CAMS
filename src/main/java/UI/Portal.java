@@ -36,6 +36,11 @@ public class Portal {
          logout = false;
          userC = new UserController();
          User user = userC.login();
+         
+         if(user == null){
+             logout = true;
+         }
+         
         while(!logout){//if user == null after successfully, and its null, he needs to relogin because password changed.
         
         userUI = new UserUI(user);
@@ -104,6 +109,7 @@ public class Portal {
            }
 
            else if(input == 9){
+               logout = true;
                userC.changePassword();
                break;
            }
@@ -124,6 +130,7 @@ public class Portal {
             
             CampUI campUI = new CampUI(user);
             EnquiryUI enquiryUI = new EnquiryUI(user);
+            SuggestionUI suggestionUI = new SuggestionUI(user);
             int input = 0;
             do{
             
@@ -153,10 +160,10 @@ public class Portal {
                enquiryUI.replyEnquiryUI();
            }
            else if(input == 7){
-               
+               suggestionUI.printUnansweredSuggestionUI();
            }
            else if(input == 8){
-               
+               suggestionUI.updateUnansweredSuggestionsUI();
            }
            else if(input == 9){
                
@@ -164,7 +171,7 @@ public class Portal {
            else if(input == 10){
                
            }
-           else if(input == 11){
+           else if(input == 12){
                logout = true;
                System.out.println("Thank you and see you again.");
                break;
@@ -182,6 +189,7 @@ public class Portal {
             
              CampUI campUI = new CampUI(user);
             EnquiryUI enquiryUI = new EnquiryUI(user);
+            SuggestionUI suggestionUI = new SuggestionUI(user);
             int input = 0;
             do{
             
@@ -223,22 +231,25 @@ public class Portal {
                enquiryUI.replyEnquiryUI();
            }
            else if (input == 11){
-               
+               suggestionUI.submitSuggestionUI();
            }
            else if (input == 12){
-               
+               suggestionUI.printUnansweredSuggestionUI();
+               suggestionUI.printApprovedSuggestionUI();
+               suggestionUI.printRejectedSuggestionUI();
            }
            else if (input == 13){
-               
+               suggestionUI.editUnansweredSuggestionUI();
            }
            else if (input == 14){
-               
+               suggestionUI.deleteUnansweredSuggestionUI();
            }
            else if (input == 15){
                
            }
            else if(input == 16){
                userC.changePassword();
+               logout = true;
                break;
            }
            else if(input == 17){

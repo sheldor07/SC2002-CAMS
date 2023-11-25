@@ -238,7 +238,7 @@ public class EnquiryDatabase extends Database{
         return enquries;
     }
     
-        public boolean add(Enquiry enquiry) {
+    public boolean add(Enquiry enquiry) {
         
         Sheet sheet = workbook.getSheetAt(0);
         int lastRow = sheet.getLastRowNum();
