@@ -33,4 +33,7 @@ public class StudentController {
             return studentDatabase.editRow(studentId, studentDatabase.COLUMN_POINTS, student.getPoints());
         }
 
+        public int getStudentPoints(int studentId){
+            return studentDatabase.getStudentById(studentId).getPoints();
+        }
 }

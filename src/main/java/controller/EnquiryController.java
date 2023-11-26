@@ -31,6 +31,9 @@ public class EnquiryController {
         return enquiryDatabase.getAnsweredEnquiryByStudentId(studentId);
 
 	}
+    public ArrayList<Enquiry> getEnquiriesByCampId(int campId) {
+        return enquiryDatabase.getEnquiriesByCampId(campId);
+    }
 
                 
         

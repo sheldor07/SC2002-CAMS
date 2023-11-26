@@ -150,6 +150,31 @@ public class Portal {
                     System.out.println("Invalid camp selection.");
                 }
             } else if (input == 10) {
+                // Show list of camps and let the staff member choose one
+                int selectedCampId = reportUI.showListOfCamps();
+
+                // Check if a valid camp ID was selected
+                if (selectedCampId != -1) { // Assuming -1 is returned for an invalid selection
+                    reportUI.setCampId(selectedCampId); // Set the selected campId
+                    reportUI.generatePerformanceReport();
+                } else {
+                    System.out.println("Invalid camp selection.");
+                }
+            } else if (input == 11) {
+                // Show list of camps and let the staff member choose one
+                int selectedCampId = reportUI.showListOfCamps();
+
+                // Check if a valid camp ID was selected
+                if (selectedCampId != -1) { // Assuming -1 is returned for an invalid selection
+                    reportUI.setCampId(selectedCampId); // Set the selected campId
+                    reportUI.generateEnquiryReport();
+                } else {
+                    System.out.println("Invalid camp selection.");
+                }
+            } else if (input == 12) {
+                logout = true;
+                userC.changePassword();
+                break;
 
             } else if (input == 12) {
                 logout = true;

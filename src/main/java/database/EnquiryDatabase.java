@@ -285,6 +285,43 @@ public class EnquiryDatabase extends Database{
               
             return true;
         
+    }   public ArrayList<Enquiry> getEnquiriesByCampId(int campId) {
+        Sheet sheet = workbook.getSheetAt(0);
+        Iterator<Row> rowIterator = sheet.iterator();
+        ArrayList<Enquiry> enquiries = new ArrayList<>();
+
+        if (rowIterator.hasNext()) {
+            rowIterator.next(); // Skip the header row
+        }
+
+        while (rowIterator.hasNext()) {
+            Row row = rowIterator.next();
+            Iterator<Cell> cellIterator = row.cellIterator();
+
+            int enquiryId, fetchedCampId, askedBy, answeredBy;
+            String details, answer;
+            Cell cell;
+
+            cell = cellIterator.next();
+            enquiryId = (int) cell.getNumericCellValue();
+            cell = cellIterator.next();
+            fetchedCampId = (int) cell.getNumericCellValue();
+
+            if (fetchedCampId == campId) { // Check if the enquiry belongs to the given campId
+                cell = cellIterator.next();
+                details = cell.getStringCellValue();
+                cell = cellIterator.next();
+                answer = cell.getStringCellValue();
+                cell = cellIterator.next();
+                askedBy = (int) cell.getNumericCellValue();
+                cell = cellIterator.next();
+                answeredBy = (int) cell.getNumericCellValue();
+
+                enquiries.add(new Enquiry(enquiryId, fetchedCampId, details, answer, askedBy, answeredBy));
+            }
+        }
+
+        return enquiries;
     }
     
 }

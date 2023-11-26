@@ -5,10 +5,8 @@
 package controller;
 
 import database.CampParticipantDatabase;
-import entity.Camp;
-import entity.CampParticipant;
-import entity.Student;
-import entity.User;
+import entity.*;
+
 import java.util.ArrayList;
 
 /**
@@ -94,5 +92,15 @@ public class CampParticipantController {
                     return campParticipantDatabase.delete(id);
 
 	}
+    public ArrayList<CampParticipant> getListOfCampCommitteeByCampId(int campId){
+        ArrayList<CampParticipant> campParticipants = campParticipantDatabase.getListByCampId(campId);
+        ArrayList<CampParticipant> campCommittee = new ArrayList<>();
+        for(CampParticipant c : campParticipants){
+            if(c.isCampCommittee()){
+                campCommittee.add(c);
+            }
+        }
+        return campCommittee;
+    }
     
 }

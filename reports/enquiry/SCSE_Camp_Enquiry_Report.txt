@@ -1,0 +1,23 @@
+============================================
+           ENQUIRY REPORT FOR CAMP          
+============================================
+Camp Name: SCSE Camp
+Camp Location: dsa
+Camp Description: campyy
+Camp Start Date: Thu Aug 10 00:00:00 SGT 2023
+Camp End Date: Sun Aug 13 00:00:00 SGT 2023
+
+--------------------------------------------
+                   ENQUIRIES                
+--------------------------------------------
+Enquiry ID: 6
+Enquiry Details: popopoop
+Asked By (User ID): 6
+Answer: Pending
+--------------------------------------------
+Enquiry ID: 7
+Enquiry Details: 12345
+Asked By (User ID): 6
+Answer: pop
+Answered By (Staff ID): 9
+--------------------------------------------

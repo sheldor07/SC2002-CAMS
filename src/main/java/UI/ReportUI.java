@@ -4,10 +4,9 @@ import controller.CampController;
 import controller.CampParticipantController;
 import controller.ReportController;
 import controller.StudentController;
-import entity.Camp;
-import entity.CampParticipant;
-import entity.Student;
-import entity.User;
+import controller.EnquiryController;
+import entity.*;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -19,6 +18,7 @@ public class ReportUI extends UI {
     private final CampParticipantController campParticipantController;
 private final ReportController reportController;
     private final StudentController studentController;
+    private final EnquiryController enquiryController;
     private final CampController campController;
     private int campId;
     public void setCampId(int campId) {
@@ -30,6 +30,7 @@ private final ReportController reportController;
         campParticipantController = new CampParticipantController();
         studentController = new StudentController();
         reportController = new ReportController();
+        enquiryController = new EnquiryController();
     }
 
     public int showListOfCamps() {
@@ -45,7 +46,11 @@ private final ReportController reportController;
         }
 
         System.out.println("Select a camp ID to generate a report:");
-        return integerValidator("Enter the camp ID: "); // Validate and return the selected camp ID
+        int result =  integerValidator("Enter the camp ID: ");
+        for(Camp camp: camps)// Validate and return the selected camp ID{
+            if(camp.getId() == result)
+                return result;
+        return -1;
     }
 
 
@@ -77,6 +82,15 @@ private final ReportController reportController;
         reportController.generateStudentReport(participantFilter, camp, campParticipants);
     }
     public void generatePerformanceReport(){
+        Camp camp = campController.getCampById(campId);
+        ArrayList<CampParticipant> campParticipants = campParticipantController.getListByCampId(campId);
+        ArrayList<CampParticipant> campCommittee = campParticipantController.getListOfCampCommitteeByCampId(campId);
+        reportController.generatePerformanceReport(camp, campCommittee);
+    }
+    public void generateEnquiryReport(){
+        Camp camp  = campController.getCampById(campId);
+        ArrayList<Enquiry> enquiries = enquiryController.getEnquiriesByCampId(campId);
+        reportController.generateEnquiryReport(camp, enquiries);
 
     }
 
