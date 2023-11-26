@@ -29,7 +29,7 @@ public class Portal {
             do {
             if (user == null) {
                 
-                logout = false;
+                logout = true;
             } else {
                 if(user instanceof CampCommittee){
                 user = userC.checkIfStudentIsCampCommittee((Student)user);

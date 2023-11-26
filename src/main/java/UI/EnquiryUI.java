@@ -19,6 +19,7 @@ import entity.Enquiry;
 import entity.Staff;
 import entity.Student;
 import entity.User;
+import java.text.SimpleDateFormat;
 
 public class EnquiryUI extends UI{
 
@@ -172,11 +173,23 @@ public class EnquiryUI extends UI{
         CampUI campUI = new CampUI(user);
         ArrayList<Camp> camps = campController.getCampsByFaculty(user);
 
+        if(!camps.isEmpty()){
         ArrayList<Enquiry> enquiries = enquiryController.getAllEnquiries();
         boolean valid = false;
         Camp camp = null;
         System.out.println("These are the camps that you can submit enquiry for:");
-        campUI.showAvailableCampsForStudent(user);
+        int counter = 1;
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+            for(Camp c : camps){
+                System.out.println("");
+                System.out.println(counter+")"+ "Camp Name: " + c.getName());
+                System.out.println("Description: " + c.getDescription());
+                System.out.println("Remaining slots: " + c.getParticipantSlots());
+                System.out.println("Start Date: "+formatter.format(c.getStartDate()));
+                System.out.println("End Date: "+formatter.format(c.getEndDate()));
+                System.out.println("Registration Deadline: "+formatter.format(c.getClosingDate()));
+                counter++;
+                    }
 
         do{
             System.out.println("Please enter the camp you wish to submit enquiry for: ");
@@ -208,6 +221,10 @@ public class EnquiryUI extends UI{
             System.out.println("We have submitted the enquiry");
         else
             System.out.println("There is an issue with submitting the enquiry.");
+        }
+        else{
+            System.out.println("There are no camps available for you to send enquiry.");
+        }
     }
 
     public void staffCommitteeUI() {//Menu letting Staff/tagged committee members view and reply to enquiries that they created

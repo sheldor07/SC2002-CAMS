@@ -19,12 +19,14 @@ public class CampUI extends UI {
             campParticipantController = new CampParticipantController();
             participantList = new ArrayList<Student>();
             committeeList = new ArrayList<Student>(); 
+            availableCampsForStudent = new ArrayList<Camp>();
 
         }
 	private CampInformation campInfo;
         private Camp camp;
 	private CampController campController;
         private CampParticipantController campParticipantController;
+        private ArrayList<Camp> availableCampsForStudent;
 	
 	ArrayList<Student> participantList;
 	ArrayList<Student> committeeList;
@@ -47,14 +49,33 @@ public class CampUI extends UI {
                 System.out.println("Input Camp Name: ");
                 String campName = sc.nextLine();
 
-                message = "Input Start Date, Example: 10/08/1999: ";
+                message = "Input Start Date, Example: 10/12/2023: ";
                 startDate = dateValidator(message);
 
-                message = "Input End Date, Example: 10/08/1999: ";
+                message = "Input End Date, Example: 13/12/2023: ";
                 endDate = dateValidator(message);
+                
+                int compare = endDate.compareTo(startDate);
 
-                message = "Input Registration Deadline, Example: 10/08/1999: ";
+
+                while(compare < 0){
+                        System.out.println("Please enter a valid start date");
+                        endDate = dateValidator(message);
+                        compare = endDate.compareTo(startDate);
+                }
+                
+
+                message = "Input Registration Deadline, Example: 08/12/2023: ";
                 registrationDeadline = dateValidator(message);
+                
+                compare = registrationDeadline.compareTo(startDate);
+
+
+                while(compare > 0){
+                        System.out.println("Please enter a valid start date");
+                        registrationDeadline = dateValidator(message);
+                        compare = registrationDeadline.compareTo(startDate);
+                }
 
                 System.out.println("Input Camp Location: ");
                 String campLocation = sc.nextLine();
@@ -141,10 +162,12 @@ public class CampUI extends UI {
 
 	public boolean registerCampUI() {//This method handles the user input and output for when they opt to register for a camp
 		String choice;
-                System.out.println("These are the camps that are available to you: ");
-
+                
                 showAvailableCampsForStudent(user);
                 ArrayList<Camp> camps = campController.getCampsByFaculty(user);
+                
+                if(!availableCampsForStudent.isEmpty()){
+                System.out.println("These are the camps that are available to you: ");
                 boolean valid = false;
                 Camp camp = null;
 
@@ -152,7 +175,7 @@ public class CampUI extends UI {
                     System.out.println("Please enter the camp you wish to join: ");
                     String campInput = sc.nextLine();
 
-                    for(Camp c: camps){
+                    for(Camp c: availableCampsForStudent){
                         if(campInput.equals(c.getName()))
                         {
                             camp = c;
@@ -220,6 +243,7 @@ public class CampUI extends UI {
 		else if(choice == "N") {
 			System.out.println("Cancelling registration process...");
 		}
+                }
 
                return false;
 
@@ -486,7 +510,7 @@ public class CampUI extends UI {
 	public void showAvailableCampsForStudent(User user) {//Shows what a regular student would see for the camp - Camp Name, description, remaining slots
                 campController = new CampController();
 		ArrayList<Camp> camps = campController.getCampsByFaculty(user);
-		ArrayList<Camp> availableCampsForStudent = new ArrayList();
+		availableCampsForStudent = new ArrayList();
                 campParticipantController = new CampParticipantController();
 		ArrayList<CampParticipant> participants = campParticipantController.getListByStudentId(user.getId());
 
