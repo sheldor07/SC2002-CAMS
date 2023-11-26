@@ -7,6 +7,9 @@ package controller;
 /**
  *
  * @author weiya
+ *//**
+ * Handler class implementing the registration of users as participants or committee members in camps.
+ * It manages the logic for adding users to the camp participant database and updating camp slots.
  */
 import UI.ParticipantFilter;
 import database.CampDatabase;
@@ -22,6 +25,9 @@ public class ParticipantRegistrationHandler implements iParticipantRegistrationH
     private final CampDatabase campDatabase;
 
     CampController campController;
+    /**
+     * Constructor to initialize the ParticipantRegistrationHandler with necessary databases and controllers.
+     */
 
     public ParticipantRegistrationHandler() {
         
@@ -29,7 +35,14 @@ public class ParticipantRegistrationHandler implements iParticipantRegistrationH
         this.campParticipantDatabase = new CampParticipantDatabase("camp_participants");
         campDatabase = new CampDatabase("camp_list");
     }
-
+    /**
+     * Registers a user as a participant in a specific camp.
+     * Ensures the user is not already registered and that the camp has available slots.
+     *
+     * @param user The user to be registered as a participant.
+     * @param camp The camp where the user will be registered.
+     * @return true if the registration is successful, false otherwise.
+     */
     @Override
     public boolean registerAsParticipant(User user, Camp camp) {
         
@@ -66,7 +79,14 @@ public class ParticipantRegistrationHandler implements iParticipantRegistrationH
         return campDatabase.editRow(camp.getId(), campDatabase.COLUMN_SLOTS, camp.getParticipantSlots()) && campDatabase.editRow(camp.getId(), campDatabase.COLUMN_COMMITTEESLOTS, camp.getCampCommSlots()) && campParticipantDatabase.add(campParticipant);
  
     }
-    
+    /**
+     * Registers a user as a committee member in a specific camp.
+     * Verifies that the user is not already registered and that there are available slots for committee members.
+     *
+     * @param user The user to be registered as a committee member.
+     * @param camp The camp where the user will be registered.
+     * @return true if the registration is successful, false otherwise.
+     */
     @Override
     public boolean registerAsCommittee(User user, Camp camp) {
 

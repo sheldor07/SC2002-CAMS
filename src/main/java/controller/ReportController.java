@@ -11,14 +11,27 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-
+/**
+ * Controller class for generating various reports related to camps.
+ * It includes functionalities to generate reports for students, performance, and enquiries.
+ */
 public class ReportController{
 
     private final StudentController studentController;
+    /**
+     * Constructor to initialize the ReportController with a student controller.
+     */
     public ReportController() {
         studentController = new StudentController();
     }
-
+    /**
+     * Generates a report of students participating in a camp based on a specific filter.
+     * The report includes details about the camp and the participants as per the specified filter.
+     *
+     * @param filter The filter to apply to the participants (e.g., Attendee, Committee).
+     * @param camp The camp for which the report is being generated.
+     * @param campParticipants The list of participants in the camp.
+     */
     public void generateStudentReport(ParticipantFilter filter, Camp camp,ArrayList<CampParticipant> campParticipants ) {
 //        Camp camp = campController.getCampById(campId);
         System.out.println("Generating report for camp: " + camp.getName());
@@ -53,6 +66,13 @@ public class ReportController{
             e.printStackTrace();
         }
     }
+    /**
+     * Determines whether a camp participant should be included in the report based on the provided filter.
+     *
+     * @param participant The camp participant to check.
+     * @param filter The filter criteria (e.g., Attendee, Committee).
+     * @return true if the participant should be included, false otherwise.
+     */
 
     private boolean shouldIncludeParticipant(CampParticipant participant, ParticipantFilter filter) {
         switch (filter) {
@@ -64,7 +84,13 @@ public class ReportController{
                 return true;
         }
     }
-
+    /**
+     * Generates a performance report for camp committee members.
+     * The report includes details about the camp and performance metrics of the committee members.
+     *
+     * @param camp The camp for which the performance report is being generated.
+     * @param campCommittee The list of camp committee members.
+     */
         public void generatePerformanceReport(Camp camp, ArrayList<CampParticipant> campCommittee) {
         System.out.println("Generating performance report for camp: " + camp.getName());
         String folderName = "reports/performance";
@@ -99,7 +125,13 @@ public class ReportController{
                 e.printStackTrace();
             }
         }
-        
+    /**
+     * Generates a report of enquiries related to a camp.
+     * The report includes details about the camp and all enquiries made, including unanswered ones.
+     *
+     * @param camp The camp for which the enquiry report is being generated.
+     * @param enquiries The list of enquiries related to the camp.
+     */
     public void generateEnquiryReport(Camp camp, ArrayList<Enquiry> enquiries) {
         System.out.println("Generating enquiry report for camp: " + camp.getName());
         String folderName = "reports/enquiry";
