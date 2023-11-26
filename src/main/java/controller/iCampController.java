@@ -17,7 +17,7 @@ import java.util.Date;
  */
 public interface iCampController {
     
-    public ArrayList<Camp> getCamps();
+    public ArrayList<Camp> getCamps();  
     public ArrayList<Camp> getCampsByStaff(int staffId);
     public Camp getCampById(int Id);
     public ArrayList<Camp> getCampsByFaculty(User user);
@@ -33,6 +33,6 @@ public interface iCampController {
      public boolean changeVisibility(int campId, boolean b);
      public boolean checkSlots(Camp camp, ParticipantFilter participantFilter);
      public boolean registerParticipant(Camp camp, ParticipantFilter participantFilter);
-     public boolean withdrawParticipant(Camp camp, ParticipantFilter participantFilter);
+     public boolean withdrawParticipant(Camp camp,int id, ParticipantFilter participantFilter);
     
 }
