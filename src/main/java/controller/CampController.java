@@ -109,7 +109,7 @@ public class CampController{
     
     public boolean withdrawParticipant(Camp camp,int id, ParticipantFilter participantFilter) {
             
-        WithdrawalHandler withdrawlHandler = new WithdrawalHandler();
+        iWithdrawalHandler withdrawlHandler = new WithdrawalHandler();
         
         boolean result =  withdrawlHandler.withdraw(camp, id, participantFilter);
         

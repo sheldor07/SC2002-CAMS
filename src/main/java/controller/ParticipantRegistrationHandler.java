@@ -16,7 +16,7 @@ import entity.CampParticipant;
 import entity.User;
 import java.util.ArrayList;
 
-public class ParticipantRegistrationHandler {
+public class ParticipantRegistrationHandler implements iParticipantRegistrationHandler {
     
     private final CampParticipantDatabase campParticipantDatabase;
     private final CampDatabase campDatabase;
@@ -30,6 +30,7 @@ public class ParticipantRegistrationHandler {
         campDatabase = new CampDatabase("camp_list");
     }
 
+    @Override
     public boolean registerAsParticipant(User user, Camp camp) {
         
     ParticipantFilter participantFilter = ParticipantFilter.CAMP_COMMITTEE;
@@ -66,6 +67,7 @@ public class ParticipantRegistrationHandler {
  
     }
     
+    @Override
     public boolean registerAsCommittee(User user, Camp camp) {
 
         ParticipantFilter participantFilter = ParticipantFilter.CAMP_COMMITTEE;

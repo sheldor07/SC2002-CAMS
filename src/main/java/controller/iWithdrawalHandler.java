@@ -4,21 +4,15 @@
  */
 package controller;
 
-import entity.Student;
-import entity.User;
+import UI.ParticipantFilter;
+import entity.Camp;
 
 /**
  *
  * @author weiya
  */
-public interface iUserInterface {
+public interface iWithdrawalHandler {
 
-    public User changePassword();
-
-    public User checkIfStudentIsCampCommittee(Student student);
-
-    public User login();
-
-    public User logout();
+    boolean withdraw(Camp camp, int id, ParticipantFilter participantFilter);
     
 }

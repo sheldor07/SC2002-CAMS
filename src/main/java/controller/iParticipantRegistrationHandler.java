@@ -4,20 +4,17 @@
  */
 package controller;
 
-import entity.Student;
+import entity.Camp;
+import entity.User;
 
 /**
  *
  * @author weiya
  */
-public interface iStudentController {
+public interface iParticipantRegistrationHandler {
 
-    boolean addStudentPoint(int studentId);
+    boolean registerAsCommittee(User user, Camp camp);
 
-    Student getStudentById(int id);
-
-    String getStudentNameById(int id);
-
-    int getStudentPoints(int studentId);
+    boolean registerAsParticipant(User user, Camp camp);
     
 }

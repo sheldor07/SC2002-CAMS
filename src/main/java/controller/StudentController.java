@@ -14,29 +14,27 @@ import java.util.ArrayList;
  *
  * @author weiya
  */
-public class StudentController implements iStudentController {
+public class StudentController {
           StudentDatabase studentDatabase;
     
     public StudentController(){
         studentDatabase = new StudentDatabase("student_list");
     }
-    @Override
+    
     public String getStudentNameById(int id) {
         return studentDatabase.getStudentById(id).getName();
     }
-    @Override
+    
      public Student getStudentById(int id){
             return studentDatabase.getStudentById(id);
         }
      
-    @Override
      public boolean addStudentPoint(int studentId){
             Student student =  studentDatabase.getStudentById(studentId);
             student.addPoints();
             return studentDatabase.editRow(studentId, studentDatabase.COLUMN_POINTS, student.getPoints());
         }
 
-    @Override
         public int getStudentPoints(int studentId){
             return studentDatabase.getStudentById(studentId).getPoints();
         }

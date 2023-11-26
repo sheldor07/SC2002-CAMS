@@ -14,7 +14,7 @@ import UI.ParticipantFilter;
 import database.CampDatabase;
 import database.CampParticipantDatabase;
 
-public class WithdrawalHandler {
+public class WithdrawalHandler implements iWithdrawalHandler {
     private final CampParticipantDatabase campParticipantDatabase;
     private final CampDatabase campDatabase;
 
@@ -23,6 +23,7 @@ public class WithdrawalHandler {
         campDatabase = new CampDatabase("camp_list");
     }
     
+    @Override
     public boolean withdraw(Camp camp, int id, ParticipantFilter participantFilter) {
         
         if(participantFilter == ParticipantFilter.ATTENDEE){

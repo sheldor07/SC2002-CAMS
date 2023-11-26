@@ -24,14 +24,12 @@ import java.util.logging.Logger;
  *
  * @author weiya
  */
-public class UserController implements iUserInterface{
+public class UserController {
     
     User user;
     StudentDatabase studentDatabase;
     StaffDatabase staffDatabase;
-    
-    
-    @Override
+
     public User login(){
         
         //the reason why we cannot simply have a userDatabase and call get list of users is because
@@ -123,7 +121,7 @@ public class UserController implements iUserInterface{
         return null;
     }
     
-    @Override
+
         public User checkIfStudentIsCampCommittee(Student student){
             //checking campparticipant database to see if user is campcommitee
         CampParticipantController campParticipantController = new CampParticipantController();
@@ -142,14 +140,13 @@ public class UserController implements iUserInterface{
         
     }
     
-    @Override
+
     public User logout(){
         System.out.println("Logged out.");
         return null;
         
     }
     
-    @Override
     public User changePassword(){
 
     //make it strong password?

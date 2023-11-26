@@ -13,14 +13,13 @@ import java.util.ArrayList;
  *
  * @author weiya
  */
-public class StaffController implements iStaffController {
+public class StaffController  {
       StaffDatabase staffDatabase;
     
     public StaffController(){
         staffDatabase = new StaffDatabase("staff_list");
     }
     
-    @Override
      public Staff getStaffById(int id){
             return staffDatabase.getListByStaffId(id);
         }
