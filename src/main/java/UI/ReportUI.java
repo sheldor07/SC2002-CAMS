@@ -48,7 +48,7 @@ private final ReportController reportController;
     public void setCampIdForCommittee(int campCommitteeId) {
 
             this.campId = campParticipantController.getCampIdByCampCommitteeID(campCommitteeId);
-
+System.out.println(campId);
     }
     /**
      * Displays a list of camps created by the user and allows them to select one.
@@ -106,6 +106,7 @@ private final ReportController reportController;
      * @param participantFilter The filter to apply to the report.
      */
     public void generateStudentListReport(ParticipantFilter participantFilter) {
+
         Camp camp = campController.getCampById(campId);
         ArrayList<CampParticipant> campParticipants = campParticipantController.getListByCampId(campId);
         reportController.generateStudentReport(participantFilter, camp, campParticipants);

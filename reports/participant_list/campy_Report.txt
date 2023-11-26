@@ -1,0 +1,15 @@
+ ============================================
+           CAMP REPORT DETAILS              
+============================================
+Camp Name: campy
+Camp Location: yuu
+Camp Description: wueqe
+Camp Start Date: Tue Aug 08 00:00:00 SGT 2023
+Camp End Date: Tue Aug 08 00:00:00 SGT 2023
+
+--------------------------------------------
+              PARTICIPANTS                  
+--------------------------------------------
+Student Name: KOH
+Student Role: Camp Committee
+--------------------------------------------

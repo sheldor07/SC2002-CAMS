@@ -48,7 +48,9 @@ public class CampCommiteePageHandler implements RoleHandler {
 
     @Override
     public boolean displayPage() {
-        reportUI.setCampIdForCommittee(user.getId() + 1);
+//        System.out.println("User ID"+ user.getId());
+        reportUI.setCampIdForCommittee(user.getId());
+
         int input = 0;
         do {
 
@@ -94,6 +96,7 @@ public class CampCommiteePageHandler implements RoleHandler {
             } else if (input == 15) {
                 // Check if a valid camp ID was selected
                 ParticipantFilter participantFilter = reportUI.askParticipantFilter();
+
                 reportUI.generateStudentListReport(participantFilter);
 
             } else if (input == 16) {

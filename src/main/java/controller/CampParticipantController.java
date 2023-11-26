@@ -142,7 +142,8 @@ public class CampParticipantController {
        public int getCampIdByCampCommitteeID(int campCommitteeID) {
         ArrayList<CampParticipant> campParticipants = campParticipantDatabase.getList();
         for (CampParticipant c : campParticipants) {
-            if (c.getId() == campCommitteeID && c.isCampCommittee()) {
+
+            if (c.getStudentId() == campCommitteeID && c.isCampCommittee()) {
                 return c.getCampId();
             }
         }

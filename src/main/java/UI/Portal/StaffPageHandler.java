@@ -39,9 +39,6 @@ public class StaffPageHandler implements RoleHandler {
      */
     @Override
     public boolean displayPage() {
-
-        reportUI.setCampIdForCommittee(user.getId());
-
         int input = 0;
         do {
 
