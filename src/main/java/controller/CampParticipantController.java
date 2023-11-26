@@ -55,7 +55,7 @@ public class CampParticipantController {
    
      public boolean registerAsCommittee(User user, Camp camp) {
        
-       ParticipantRegistrationHandler handler = new ParticipantRegistrationHandler();
+       iParticipantRegistrationHandler handler = new ParticipantRegistrationHandler();
        
        return handler.registerAsParticipant(user, camp);
 
