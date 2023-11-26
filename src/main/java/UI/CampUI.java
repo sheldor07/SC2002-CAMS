@@ -534,18 +534,6 @@ public class CampUI extends UI {
 		System.out.println("");
 	}
 
-	public void viewEnquiry() {
-
-	}
-
-	public void viewSuggestion() {
-
-	}
-
-	public void printCampParticipants() {
-
-	}
-
 
 	public void staffUI() {//Shows what staff would see for the camp (full info)
 		this.printCampInformation();
