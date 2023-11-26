@@ -4,6 +4,7 @@
  */
 package controller;
 
+import UI.ParticipantFilter;
 import database.CampParticipantDatabase;
 import entity.*;
 
@@ -15,9 +16,11 @@ import java.util.ArrayList;
  */
 public class CampParticipantController {
     CampParticipantDatabase campParticipantDatabase;
+    CampController campController;
     
     public CampParticipantController(){
         campParticipantDatabase = new CampParticipantDatabase("camp_participants");
+        campController = new CampController();
     }
     
     public void refreshCampDatabase(){
@@ -41,9 +44,10 @@ public class CampParticipantController {
    }
    
    public boolean registerAsParticipant(User user, Camp camp) {
-       
+
         ArrayList<CampParticipant> campParticipants = campParticipantDatabase.getList();
              int max = 0;
+
              for(CampParticipant c : campParticipants){
                  if(c.getStudentId() == user.getId() && camp.getId() == c.getCampId())
                  {  
@@ -54,11 +58,19 @@ public class CampParticipantController {
                     if(c.getId() > max){
                         max = c.getId();
                     }
-             }
+
+                 }
+       if(!campController.checkSlots(camp, ParticipantFilter.ATTENDEE)){
+           System.out.println("Camp is full. No more participants allowed");
+           return false;
+       }
              
              CampParticipant campParticipant = new CampParticipant(max+1,camp.getId(),user.getId(),camp.getStaffInCharge(),false);
              boolean result = campParticipantDatabase.add(campParticipant);
-             refreshCampDatabase();
+             campController.registerParticipant(camp, ParticipantFilter.ATTENDEE);
+
+       refreshCampDatabase();
+
 
              return result;
                 
@@ -66,7 +78,9 @@ public class CampParticipantController {
 	}
 
 	public boolean registerAsCommittee(User user, Camp camp) {
+
         ArrayList<CampParticipant> campParticipants = campParticipantDatabase.getList();
+
              int max = 0;
              for(CampParticipant c : campParticipants){
                  if(c.getStudentId() == user.getId() && camp.getId() == c.getCampId())
@@ -78,18 +92,29 @@ public class CampParticipantController {
                     if(c.getId() > max){
                         max = c.getId();
                     }
+
              }
-             
+         if(!campController.checkSlots(camp, ParticipantFilter.CAMP_COMMITTEE)){
+              System.out.println("Camp is full. No more committee allowed.");
+              return false;
+         }
+
              CampParticipant campParticipant = new CampParticipant(max+1,camp.getId(),user.getId(),camp.getStaffInCharge(),true);
              boolean result = campParticipantDatabase.add(campParticipant);
-             
+             campController.registerParticipant(camp, ParticipantFilter.CAMP_COMMITTEE);
              refreshCampDatabase();
 
              return result;
 	}
 
-	public boolean withdraw(int id) {
-                    return campParticipantDatabase.delete(id);
+	public boolean withdraw(Camp camp,int id, ParticipantFilter participantFilter) {
+        campController.withdrawParticipant(camp, participantFilter);
+
+        boolean result =  campParticipantDatabase.delete(id);
+        refreshCampDatabase();
+        return result;
+
+
 
 	}
     public ArrayList<CampParticipant> getListOfCampCommitteeByCampId(int campId){
@@ -102,5 +127,14 @@ public class CampParticipantController {
         }
         return campCommittee;
     }
-    
+
+    public boolean isCampCommittee(int campId, int studentId){
+        ArrayList<CampParticipant> campParticipants = campParticipantDatabase.getListByCampId(campId);
+        for(CampParticipant c : campParticipants){
+            if(c.getStudentId() == studentId && c.isCampCommittee()){
+                return true;
+            }
+        }
+        return false;
+    }
 }

@@ -74,7 +74,6 @@ public class Portal {
                 if (userSignedUpAsCommittee) {
                     break;
                 }
-
             } else if (input == 3) {
                 campUI.showRegisteredCamps();
             } else if (input == 4) {

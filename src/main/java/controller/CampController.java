@@ -4,6 +4,7 @@
  */
 package controller;
 
+import UI.ParticipantFilter;
 import database.CampDatabase;
 import entity.Camp;
 import java.util.Date;
@@ -14,38 +15,39 @@ import java.util.ArrayList;
 
 public class CampController {
     CampDatabase campDatabase;
-    public CampController(){
+
+    public CampController() {
         campDatabase = new CampDatabase("camp_list");
     }
 
-    public void refreshCampDatabase(){
+    public void refreshCampDatabase() {
         campDatabase = new CampDatabase("camp_list");
     }
 
-    public ArrayList<Camp> getCamps(){
+    public ArrayList<Camp> getCamps() {
         return campDatabase.getList();
     }
 
-    public ArrayList<Camp> getCampsByStaff(int staffId){
+    public ArrayList<Camp> getCampsByStaff(int staffId) {
         return campDatabase.getCampsByStaffInCharge(staffId);
     }
 
-    public Camp getCampById(int Id){
+    public Camp getCampById(int Id) {
         return campDatabase.getCampsById(Id);
     }
 
-    public ArrayList<Camp> getCampsByFaculty(User user){
+    public ArrayList<Camp> getCampsByFaculty(User user) {
         return campDatabase.getCampsByUserFaculty(user);
     }
 
-    public int createCamp(Camp camp){
+    public int createCamp(Camp camp) {
         ArrayList<Camp> camps = campDatabase.getList();
         int max = 0;
-        for(Camp c : camps){
-            if(c.getId() > max)
+        for (Camp c : camps) {
+            if (c.getId() > max)
                 max = c.getId();
         }
-        camp.setID(max+1);
+        camp.setID(max + 1);
         int result = campDatabase.add(camp);
         refreshCampDatabase();
 
@@ -93,6 +95,36 @@ public class CampController {
 
     public boolean changeVisibility(int campId, boolean b) {
         return campDatabase.editRow(campId, campDatabase.COLUMN_VISIBILITY, b);
+    }
+
+    public boolean checkSlots(Camp camp, ParticipantFilter participantFilter) {
+        if (participantFilter == ParticipantFilter.ATTENDEE) {
+            return camp.getParticipantSlots() > 0;
+        } else if (participantFilter == ParticipantFilter.CAMP_COMMITTEE) {
+            return camp.getCampCommSlots() > 0;
+        }
+        return false;
+    }
+    public boolean registerParticipant(Camp camp, ParticipantFilter participantFilter){
+        if(participantFilter == ParticipantFilter.ATTENDEE){
+            camp.setParticipantSlots(camp.getParticipantSlots()-1);
+        }else if(participantFilter == ParticipantFilter.CAMP_COMMITTEE){
+            camp.setCampCommSlots(camp.getCampCommSlots()-1);
+            camp.setParticipantSlots(camp.getParticipantSlots()-1);
+        }
+        refreshCampDatabase();
+
+        return campDatabase.editRow(camp.getId(), campDatabase.COLUMN_SLOTS, camp.getParticipantSlots()) && campDatabase.editRow(camp.getId(), campDatabase.COLUMN_COMMITTEESLOTS, camp.getCampCommSlots());
+    }
+    public boolean withdrawParticipant(Camp camp, ParticipantFilter participantFilter){
+        if(participantFilter == ParticipantFilter.ATTENDEE){
+            camp.setParticipantSlots(camp.getParticipantSlots()+1);
+        }else if(participantFilter == ParticipantFilter.CAMP_COMMITTEE){
+            camp.setCampCommSlots(camp.getCampCommSlots()+1);
+            camp.setParticipantSlots(camp.getParticipantSlots()+1);
+        }
+
+        return campDatabase.editRow(camp.getId(), campDatabase.COLUMN_SLOTS, camp.getParticipantSlots()) && campDatabase.editRow(camp.getId(), campDatabase.COLUMN_COMMITTEESLOTS, camp.getCampCommSlots());
     }
 
 }

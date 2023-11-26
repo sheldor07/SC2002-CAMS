@@ -111,14 +111,12 @@ public class Camp implements Identity {
         Faculty facultyOpenTo = getInformation().getFacultyOpenTo();
         return facultyOpenTo.equals(faculty);
     }
-    public void getSuggestionDB(){
-
-    }
-    public void getEnquiryDB(){
-
-    }
     @Override
     public int getId() {
         return getInformation().getCampId();
+    }
+
+    public String getFacultyOpenTo() {
+        return getInformation().getFacultyOpenTo().toString();
     }
 }
