@@ -12,13 +12,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class ReportController {
+public class ReportController implements iReportController {
 
     private final StudentController studentController;
     public ReportController() {
         studentController = new StudentController();
     }
 
+    @Override
     public void generateStudentReport(ParticipantFilter filter, Camp camp,ArrayList<CampParticipant> campParticipants ) {
 //        Camp camp = campController.getCampById(campId);
         System.out.println("Generating report for camp: " + camp.getName());
@@ -65,6 +66,7 @@ public class ReportController {
         }
     }
 
+    @Override
         public void generatePerformanceReport(Camp camp, ArrayList<CampParticipant> campCommittee) {
         System.out.println("Generating performance report for camp: " + camp.getName());
         String folderName = "reports/performance";
@@ -99,6 +101,7 @@ public class ReportController {
                 e.printStackTrace();
             }
         }
+    @Override
     public void generateEnquiryReport(Camp camp, ArrayList<Enquiry> enquiries) {
         System.out.println("Generating enquiry report for camp: " + camp.getName());
         String folderName = "reports/enquiry";

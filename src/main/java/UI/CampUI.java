@@ -291,7 +291,7 @@ public class CampUI extends UI {
 			case 1: //Change Camp Name
 				System.out.println("What would you like to change Camp Name to?");
 				choice = s.nextLine();
-				if(campController.changeName(campInfo.getCampId(), choice)) {
+				if(campController.changeCampName(campInfo.getCampId(), choice)) {
 					System.out.println("Camp Name change successful!");
 				}
 				else {
@@ -607,7 +607,10 @@ public class CampUI extends UI {
 		}
 
 		if(choice.equals("Y")) {
-			ParticipantFilter participantFilter = campParticipantController.isCampCommittee(camp.getId(), user.getId()) ? ParticipantFilter.CAMP_COMMITTEE : ParticipantFilter.ATTENDEE;
+                    ParticipantFilter participantFilter = ParticipantFilter.ATTENDEE;
+                    if(campParticipantController.isCampCommittee(camp.getId(), user.getId())){
+                        participantFilter = ParticipantFilter.CAMP_COMMITTEE;
+                    }
 			System.out.println("Withdrawing you from " + campInfo.getName() + "...");
 			if(campParticipantController.withdraw(camp, chosenCampParticipant.getId(), participantFilter)) {
 				System.out.println("Withdrawal successful!");
