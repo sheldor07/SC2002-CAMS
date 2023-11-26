@@ -28,7 +28,8 @@ public class StaffPageHandler implements RoleHandler {
     public boolean displayPage() {
 
         reportUI.setCampIdForCommittee(user.getId());
-
+        suggestionUI = new SuggestionUI(user);
+        
         int input = 0;
         do {
 

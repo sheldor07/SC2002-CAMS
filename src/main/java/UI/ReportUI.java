@@ -21,6 +21,7 @@ private final ReportController reportController;
     private final EnquiryController enquiryController;
     private final CampController campController;
     private int campId;
+    
     public void setCampId(int campId) {
         this.campId = campId;
     }
@@ -35,7 +36,7 @@ private final ReportController reportController;
     public void setCampIdForCommittee(int campCommitteeId) {
 
             this.campId = campParticipantController.getCampIdByCampCommitteeID(campCommitteeId);
-
+            this.setCampId(campId);
     }
 
     public int showListOfCamps() {
@@ -45,6 +46,7 @@ private final ReportController reportController;
             return -1; // Indicate no selection possible
         }
 
+       
         System.out.println("List of camps created by you:");
         for (Camp camp : camps) {
             System.out.println(camp.getId() + ". " + camp.getName());
