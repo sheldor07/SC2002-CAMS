@@ -24,7 +24,10 @@ import org.apache.poi.ss.usermodel.Sheet;
 /**
  *
  * @author weiya
- */
+ *//**
+        * Database class for handling camp participant-related data.
+        * Provides methods to interact with camp participant data such as adding, retrieving, and editing information.
+        */
 public class CampParticipantDatabase extends Database {
 
     public final String COLUMN_ID = "ID";
@@ -32,12 +35,21 @@ public class CampParticipantDatabase extends Database {
     public final String COLUMN_STUDENTID = "Student ID";
     public final String COLUMN_STAFFINCHARGEID = "Staff In Charge ID";
     public final String COLUMN_ISCAMPCOMMITTEE = "IsCampComittee";
-
+    /**
+     * Constructs a CampParticipantDatabase with a specified file path.
+     *
+     * @param filePath The path to the file containing camp participant data.
+     */
 
     public CampParticipantDatabase(String filePath) {
         super(filePath);
     }
-
+    /**
+     * Adds a new camp participant to the database.
+     *
+     * @param campParticipant The CampParticipant object to be added.
+     * @return true if the addition is successful, false otherwise.
+     */
     public boolean add(CampParticipant campParticipant) {
 
         Sheet sheet = workbook.getSheetAt(0);
@@ -80,7 +92,11 @@ public class CampParticipantDatabase extends Database {
         return true;
 
     }
-
+    /**
+     * Retrieves a list of all camp participants from the database.
+     *
+     * @return An ArrayList of all CampParticipant objects in the database.
+     */
     @Override
     public ArrayList getList() {
 
@@ -121,6 +137,12 @@ public class CampParticipantDatabase extends Database {
 
 
     }
+    /**
+     * Retrieves a list of camp participants based on a student ID.
+     *
+     * @param sID The student ID.
+     * @return An ArrayList of CampParticipant objects associated with the given student ID.
+     */
 
     public ArrayList getListByStudentId(int sID) {
 
@@ -163,7 +185,12 @@ public class CampParticipantDatabase extends Database {
 
     }
 
-
+    /**
+     * Retrieves a specific camp committee member based on a student ID.
+     *
+     * @param sID The student ID.
+     * @return A CampParticipant object if found, null otherwise.
+     */
     public CampParticipant getCommitteeByStudentId(int sID) {
 
         Sheet sheet = workbook.getSheetAt(0);
@@ -203,7 +230,15 @@ public class CampParticipantDatabase extends Database {
         return null;
 
 
-    }public ArrayList<CampParticipant> getListByCampId(int campId) {
+    }
+
+    /**
+     * Retrieves a list of camp participants based on a camp ID.
+     *
+     * @param campId The camp ID.
+     * @return An ArrayList of CampParticipant objects associated with the given camp ID.
+     */
+    public ArrayList<CampParticipant> getListByCampId(int campId) {
         Sheet sheet = workbook.getSheetAt(0);
 
         // Iterate through each row from first sheet

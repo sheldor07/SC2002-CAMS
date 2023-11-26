@@ -10,117 +10,146 @@ import controller.*;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
-
+/**
+ * The `CampUI` class represents the user interface for managing and interacting with camps.
+ * It provides methods for creating, editing, viewing, and registering for camps.
+ * Users can perform actions such as creating new camps, registering for existing camps,
+ * editing their own camps, and more.
+ */
 public class CampUI extends UI {
+	/**
+	 * Constructor for creating a new `CampUI` object.
+	 *
+	 * @param user The user associated with this user interface.
+	 */
 
-        public CampUI(User user){
-            super(user);
-            campController = new CampController();
-            campParticipantController = new CampParticipantController();
-            participantList = new ArrayList<Student>();
-            committeeList = new ArrayList<Student>(); 
+	public CampUI(User user){
+		super(user);
+		campController = new CampController();
+		campParticipantController = new CampParticipantController();
+		participantList = new ArrayList<Student>();
+		committeeList = new ArrayList<Student>();
 
-        }
+	}
 	private CampInformation campInfo;
-        private Camp camp;
+	private Camp camp;
 	private CampController campController;
-        private CampParticipantController campParticipantController;
-	
+	private CampParticipantController campParticipantController;
+
 	ArrayList<Student> participantList;
 	ArrayList<Student> committeeList;
-	
+
 	private SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        
-        public void setCamp(Camp c){
-            campInfo = c.getInformation();
-            camp = c;
-        }
+	/**
+	 * Sets the current camp for the user interface.
+	 *
+	 * @param c The camp to set as the current camp.
+	 */
+	public void setCamp(Camp c){
+		campInfo = c.getInformation();
+		camp = c;
+	}
+	/**
+	 * Displays a menu and collects user input to create a new camp.
+	 *
+	 * @return The result of the camp creation operation.
+	 */
+	public int showCreateCamp(){
+		String message = "";
+		Date startDate = null, endDate = null, registrationDeadline = null;
+		int totalSlots = 0;
+		int campCommSlots = 0;
+		boolean visible = false;
 
-        public int showCreateCamp(){
-            String message = "";
-               Date startDate = null, endDate = null, registrationDeadline = null;
-                int totalSlots = 0;
-				int campCommSlots = 0;
-                boolean visible = false;
+		System.out.println("Enter the Camp Details: ");
+		System.out.println("Input Camp Name: ");
+		String campName = sc.nextLine();
 
-                System.out.println("Enter the Camp Details: ");
-                System.out.println("Input Camp Name: ");
-                String campName = sc.nextLine();
+		message = "Input Start Date, Example: 10/08/1999: ";
+		startDate = dateValidator(message);
 
-                message = "Input Start Date, Example: 10/08/1999: ";
-                startDate = dateValidator(message);
+		message = "Input End Date, Example: 10/08/1999: ";
+		endDate = dateValidator(message);
 
-                message = "Input End Date, Example: 10/08/1999: ";
-                endDate = dateValidator(message);
+		message = "Input Registration Deadline, Example: 10/08/1999: ";
+		registrationDeadline = dateValidator(message);
 
-                message = "Input Registration Deadline, Example: 10/08/1999: ";
-                registrationDeadline = dateValidator(message);
+		System.out.println("Input Camp Location: ");
+		String campLocation = sc.nextLine();
 
-                System.out.println("Input Camp Location: ");
-                String campLocation = sc.nextLine();
+		message = "Input Faculty, Example: SCSE/SSS/NBS/NTU: ";
+		Faculty faculty = facultyValidator(message);
 
-                message = "Input Faculty, Example: SCSE/SSS/NBS/NTU: ";
-                Faculty faculty = facultyValidator(message);
+		System.out.println("Input Description: ");
+		String description = sc.nextLine();
 
-                System.out.println("Input Description: ");
-                String description = sc.nextLine();
+		message = "Input Total Number of Slots: ";
+		totalSlots = integerValidator(message);
+		message = "Input Total Number of Committee Slots: ";
+		campCommSlots = integerValidator(message);
+		if(campCommSlots > totalSlots) {
+			System.out.println("Total number of committee slots cannot be more than total number of slots.");
+			return -1;
+		}
+		if(campCommSlots > 10 || campCommSlots < 0) {
+			System.out.println("Total number of committee slots cannot be negative.");
+			return -1;
+		}
 
-                message = "Input Total Number of Slots: ";
-                totalSlots = integerValidator(message);
-				message = "Input Total Number of Committee Slots: ";
-				campCommSlots = integerValidator(message);
-				if(campCommSlots > totalSlots) {
-					System.out.println("Total number of committee slots cannot be more than total number of slots.");
-					return -1;
-				}
-			if(campCommSlots > 10 || campCommSlots < 0) {
-				System.out.println("Total number of committee slots cannot be negative.");
-				return -1;
+
+		message = "Set Camp Visible?(Visible = 1, Not Visible = 0): ";
+		visible = booleanValidator(message);
+
+
+
+		int result = campController.createCamp(new Camp(campName,campLocation, description, startDate, endDate, registrationDeadline, totalSlots, campCommSlots, user.getId(),faculty,visible));
+
+		return result;
+	}
+
+
+	/**
+	 * Prints information about all available camps.
+	 */
+	public void printAllCamps(){
+		ArrayList<Camp> camps = campController.getCamps();
+		if(!camps.isEmpty()){
+			for(Camp c : camps){
+				setCamp(c);
+				printCampInformation();
 			}
+		}
+		else
+			System.out.println("There are no camps available for view.");
+	}
+	/**
+	 * Prints information about camps created by the current user.
+	 *
+	 * @param user The user whose camps are to be printed.
+	 */
+
+	public void printCampCreatedByUser(User user){
+		ArrayList<Camp> camps = campController.getCamps();
+		if(!camps.isEmpty()){
+			for(Camp c : camps){
+				if(c.getStaffInCharge() == user.getId()){
+					setCamp(c);
+					printCampInformation();
+				}
+
+			}
+		}
+		else
+			System.out.println("You have created no camps.");
+	}
 
 
-                message = "Set Camp Visible?(Visible = 1, Not Visible = 0): ";
-                visible = booleanValidator(message);
-
-
-
-                int result = campController.createCamp(new Camp(campName,campLocation, description, startDate, endDate, registrationDeadline, totalSlots, campCommSlots, user.getId(),faculty,visible));
-
-                return result;
-        }
-
-
-
-        public void printAllCamps(){
-            ArrayList<Camp> camps = campController.getCamps();
-            if(!camps.isEmpty()){
-            for(Camp c : camps){
-                setCamp(c);
-                printCampInformation();
-            }
-            }
-            else
-                System.out.println("There are no camps available for view.");
-        }
-
-        public void printCampCreatedByUser(User user){
-               ArrayList<Camp> camps = campController.getCamps();
-               if(!camps.isEmpty()){
-            for(Camp c : camps){
-                if(c.getStaffInCharge() == user.getId()){
-                setCamp(c);
-                printCampInformation();
-                }
-
-            }
-               }
-               else
-                System.out.println("You have created no camps.");
-        }
-
+	/**
+	 * Prints detailed information about a camp, including its name, dates, location, and more.
+	 */
 
 	public void printCampInformation() {//i just putting all info, for staff to view and use
-            System.out.println("---------------------------------------------------------");
+		System.out.println("---------------------------------------------------------");
 		System.out.println("Camp Name: " + campInfo.getName());
 		System.out.println("Start Date: " + formatter.format(campInfo.getStartDate()));
 		System.out.println("End Date: " + formatter.format(campInfo.getEndDate()));
@@ -131,39 +160,44 @@ public class CampUI extends UI {
 		System.out.println("Committee Slots : " + camp.getCampCommSlots());
 		System.out.println("Camp Description: " + campInfo.getDescription());
 
-                StaffController staffController = new StaffController();
-                Staff staff = staffController.getStaffById(campInfo.getStaffInCharge());
+		StaffController staffController = new StaffController();
+		Staff staff = staffController.getStaffById(campInfo.getStaffInCharge());
 		System.out.println("Staff in Charge: " + staff.getName());
 
 		System.out.println("Visibility: " + campInfo.isVisible());
-                System.out.println("---------------------------------------------------------");
+		System.out.println("---------------------------------------------------------");
 	}
-
+	/**
+	 * Handles the user interface for registering for a camp, including selecting the camp
+	 * and registration type (attendee or committee member).
+	 *
+	 * @return True if registration is successful, false otherwise.
+	 */
 	public boolean registerCampUI() {//This method handles the user input and output for when they opt to register for a camp
 		String choice;
-                System.out.println("These are the camps that are available to you: ");
+		System.out.println("These are the camps that are available to you: ");
 
-                showAvailableCampsForStudent(user);
-                ArrayList<Camp> camps = campController.getCampsByFaculty(user);
-                boolean valid = false;
-                Camp camp = null;
+		showAvailableCampsForStudent(user);
+		ArrayList<Camp> camps = campController.getCampsByFaculty(user);
+		boolean valid = false;
+		Camp camp = null;
 
-                do{
-                    System.out.println("Please enter the camp you wish to join: ");
-                    String campInput = sc.nextLine();
+		do{
+			System.out.println("Please enter the camp you wish to join: ");
+			String campInput = sc.nextLine();
 
-                    for(Camp c: camps){
-                        if(campInput.equals(c.getName()))
-                        {
-                            camp = c;
-                            setCamp(camp);
-                            valid = true;
-                            break;
-                        }
-                    }
-                    if(!valid)
-                        System.out.println("Please select a valid camp name.");
-                }while(!valid);
+			for(Camp c: camps){
+				if(campInput.equals(c.getName()))
+				{
+					camp = c;
+					setCamp(camp);
+					valid = true;
+					break;
+				}
+			}
+			if(!valid)
+				System.out.println("Please select a valid camp name.");
+		}while(!valid);
 
 		System.out.println("Are you sure you want to register for " + campInfo.getName() + "? Enter 'Y' if yes, 'N' if no.");
 		choice = sc.nextLine().toUpperCase();
@@ -202,9 +236,9 @@ public class CampUI extends UI {
 
 				if(campParticipantController.registerAsCommittee(user, camp)) {
 					System.out.println("Committee registration successful!");
-                                        //return here so we can display camp committee page.
-                                        return true;
-    				}
+					//return here so we can display camp committee page.
+					return true;
+				}
 
 				else {
 					System.out.println("Registration unsuccessful.");
@@ -221,9 +255,13 @@ public class CampUI extends UI {
 			System.out.println("Cancelling registration process...");
 		}
 
-               return false;
+		return false;
 
 	}
+	/**
+	 * Handles the user interface for editing camp information, allowing the user to select
+	 * and modify various attributes of the camp.
+	 */
 
 	public void editCampUI() {
 		Scanner s = new Scanner(System.in);
@@ -233,8 +271,8 @@ public class CampUI extends UI {
 
 		System.out.println("These are the camps created by you.");
 		int count = 1;
-                
-                campController = new CampController();
+
+		campController = new CampController();
 		ArrayList<Camp> campsCreatedByStaff = campController.getCampsByStaff(user.getId());
 		for(Camp c : campsCreatedByStaff){
 			if(c.getStaffInCharge() == user.getId()){
@@ -482,12 +520,17 @@ public class CampUI extends UI {
 
 
 	}
+	/**
+	 * Displays available camps for a student to register based on faculty and existing registrations.
+	 *
+	 * @param user The student user for whom available camps are displayed.
+	 */
 
 	public void showAvailableCampsForStudent(User user) {//Shows what a regular student would see for the camp - Camp Name, description, remaining slots
-                campController = new CampController();
+		campController = new CampController();
 		ArrayList<Camp> camps = campController.getCampsByFaculty(user);
 		ArrayList<Camp> availableCampsForStudent = new ArrayList();
-                campParticipantController = new CampParticipantController();
+		campParticipantController = new CampParticipantController();
 		ArrayList<CampParticipant> participants = campParticipantController.getListByStudentId(user.getId());
 
 		//9 - 13 c
@@ -536,109 +579,116 @@ public class CampUI extends UI {
 		System.out.println("");
 	}
 
-
+	/**
+	 * Displays camp information as seen by staff members, including all details.
+	 */
 	public void staffUI() {//Shows what staff would see for the camp (full info)
 		this.printCampInformation();
 
 	}
-
+	/**
+	 * Displays a list of camps that the current user is registered for.
+	 */
 	public void showRegisteredCamps(){
-            campParticipantController = new CampParticipantController();
-            ArrayList<CampParticipant> campParticipants = campParticipantController.getListByStudentId(user.getId());
+		campParticipantController = new CampParticipantController();
+		ArrayList<CampParticipant> campParticipants = campParticipantController.getListByStudentId(user.getId());
 
-            int counter = 1;
-            if(!campParticipants.isEmpty())
-            {
-                for(CampParticipant participant : campParticipants){
-                    Camp camp = campController.getCampById(participant.getCampId());
-                    System.out.println("");
-                    System.out.println(counter+") Camp Name: "+camp.getName());
-                    System.out.println("Description: "+camp.getDescription());
+		int counter = 1;
+		if(!campParticipants.isEmpty())
+		{
+			for(CampParticipant participant : campParticipants){
+				Camp camp = campController.getCampById(participant.getCampId());
+				System.out.println("");
+				System.out.println(counter+") Camp Name: "+camp.getName());
+				System.out.println("Description: "+camp.getDescription());
 
-                }
-            }
-            else
-                System.out.println("You did not register for any camp.");
-
-
-
-        }
-
-	public void withdrawCampUI() {//Handles user input and output for withdrawing from a camp
-                campParticipantController = new CampParticipantController();
-                ArrayList<CampParticipant> participants = campParticipantController.getListByStudentId(user.getId());
-
-                if(!participants.isEmpty()){
-                System.out.println("You have signed up for these camps: ");
-                int count = 1;
-               ArrayList<Camp> camps = new ArrayList();
-                for(CampParticipant campParticipant : participants){
-                    Camp camp = campController.getCampById(campParticipant.getCampId());
-                    camps.add(camp);
-                    System.out.println(count+") "+camp.getName());
-                    count++;
-
-            }
-                int validInput = 0;
-                CampParticipant chosenCampParticipant = null;
-                do{
-
-                System.out.println("Which camp would you like to withdraw from?: ");
-                String campName = sc.nextLine();
-
-                    for(CampParticipant campParticipant : participants){
-                       Camp camp = campController.getCampById(campParticipant.getCampId());
-                    if(campName.equals(camp.getName())){
-                        chosenCampParticipant = campParticipant;
-                        setCamp(camp);
-                        validInput = 1;
-                        break;
-                }
-
-                    }
-                 if(validInput == 0)
-                     System.out.println("Please input a valid camp to withdraw from");
-
-                }while(validInput == 0);
-
-		String choice;
-		System.out.println("Are you sure you want to withdraw from " + campInfo.getName() + "?");
-		System.out.println("Enter Y to confirm your decision, or N to cancel.");
-		choice = sc.nextLine().toUpperCase();
-
-		while(!choice.equals("Y") && !choice.equals("N")) {//Loops error msg + re-prompt on invalid input
-			System.out.println("Incorrect input. Please try again.");
-			choice = sc.nextLine().toUpperCase();
-		}
-
-		if(choice.equals("Y")) {
-                    ParticipantFilter participantFilter = ParticipantFilter.ATTENDEE;
-                    if(campParticipantController.isCampCommittee(camp.getId(), user.getId())){
-                        participantFilter = ParticipantFilter.CAMP_COMMITTEE;
-                    }
-			System.out.println("Withdrawing you from " + campInfo.getName() + "...");
-			if(campController.withdrawParticipant(camp, chosenCampParticipant.getId(), participantFilter)) {
-				System.out.println("Withdrawal successful!");
-                                campParticipantController.refreshCampParticipantDatabase();
-			}
-			
-			else {
-				System.out.println("Issue with withdrawal");
 			}
 		}
-		
-		else if(choice.equals("N")) {
-			System.out.println("Cancelling withdrawal process...");
-		}
-		
-		
+		else
+			System.out.println("You did not register for any camp.");
+
+
+
 	}
-        
-        else
-        {
-            System.out.println("You have not signed up for any camps.");
-        }
+	/**
+	 * Handles the user interface for withdrawing from a camp, allowing the user to select
+	 * and confirm withdrawal from a registered camp.
+	 */
+	public void withdrawCampUI() {//Handles user input and output for withdrawing from a camp
+		campParticipantController = new CampParticipantController();
+		ArrayList<CampParticipant> participants = campParticipantController.getListByStudentId(user.getId());
 
-        }
+		if(!participants.isEmpty()){
+			System.out.println("You have signed up for these camps: ");
+			int count = 1;
+			ArrayList<Camp> camps = new ArrayList();
+			for(CampParticipant campParticipant : participants){
+				Camp camp = campController.getCampById(campParticipant.getCampId());
+				camps.add(camp);
+				System.out.println(count+") "+camp.getName());
+				count++;
+
+			}
+			int validInput = 0;
+			CampParticipant chosenCampParticipant = null;
+			do{
+
+				System.out.println("Which camp would you like to withdraw from?: ");
+				String campName = sc.nextLine();
+
+				for(CampParticipant campParticipant : participants){
+					Camp camp = campController.getCampById(campParticipant.getCampId());
+					if(campName.equals(camp.getName())){
+						chosenCampParticipant = campParticipant;
+						setCamp(camp);
+						validInput = 1;
+						break;
+					}
+
+				}
+				if(validInput == 0)
+					System.out.println("Please input a valid camp to withdraw from");
+
+			}while(validInput == 0);
+
+			String choice;
+			System.out.println("Are you sure you want to withdraw from " + campInfo.getName() + "?");
+			System.out.println("Enter Y to confirm your decision, or N to cancel.");
+			choice = sc.nextLine().toUpperCase();
+
+			while(!choice.equals("Y") && !choice.equals("N")) {//Loops error msg + re-prompt on invalid input
+				System.out.println("Incorrect input. Please try again.");
+				choice = sc.nextLine().toUpperCase();
+			}
+
+			if(choice.equals("Y")) {
+				ParticipantFilter participantFilter = ParticipantFilter.ATTENDEE;
+				if(campParticipantController.isCampCommittee(camp.getId(), user.getId())){
+					participantFilter = ParticipantFilter.CAMP_COMMITTEE;
+				}
+				System.out.println("Withdrawing you from " + campInfo.getName() + "...");
+				if(campController.withdrawParticipant(camp, chosenCampParticipant.getId(), participantFilter)) {
+					System.out.println("Withdrawal successful!");
+					campParticipantController.refreshCampParticipantDatabase();
+				}
+
+				else {
+					System.out.println("Issue with withdrawal");
+				}
+			}
+
+			else if(choice.equals("N")) {
+				System.out.println("Cancelling withdrawal process...");
+			}
+
+
+		}
+
+		else
+		{
+			System.out.println("You have not signed up for any camps.");
+		}
+
+	}
 }
 

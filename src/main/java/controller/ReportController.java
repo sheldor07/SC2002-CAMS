@@ -35,7 +35,7 @@ public class ReportController{
     public void generateStudentReport(ParticipantFilter filter, Camp camp,ArrayList<CampParticipant> campParticipants ) {
 //        Camp camp = campController.getCampById(campId);
         System.out.println("Generating report for camp: " + camp.getName());
-        String folderName = "reports";
+        String folderName = "reports/participant_list";
         File directory = new File(folderName);
         if (!directory.exists()) {
             directory.mkdir();

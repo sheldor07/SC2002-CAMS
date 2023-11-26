@@ -3,7 +3,11 @@ package UI.Portal;
 import UI.*;
 import controller.UserController;
 import entity.User;
-
+/**
+ * This class represents a role handler for staff members in the CAMs system.
+ * It provides functionality for staff members to manage camps, inquiries, suggestions,
+ * and generate reports.
+ */
 public class StaffPageHandler implements RoleHandler {
     private User user;
     private UserUI userUI;
@@ -13,7 +17,12 @@ public class StaffPageHandler implements RoleHandler {
     private ReportUI reportUI;
 
     private UserController userC;
-
+    /**
+     * Constructs a new StaffPageHandler with the given user and user controller.
+     *
+     * @param user The user for which this handler is created.
+     * @param userC The user controller used for user-related operations.
+     */
     public StaffPageHandler(User user, UserController userC) {
         this.user = user;
         this.reportUI = new ReportUI(user);
@@ -23,7 +32,11 @@ public class StaffPageHandler implements RoleHandler {
         this.userC = userC;
     }
 
-
+    /**
+     * Displays the staff page and handles user interaction.
+     *
+     * @return True if the user chooses to logout, false otherwise.
+     */
     @Override
     public boolean displayPage() {
 
@@ -104,7 +117,7 @@ public class StaffPageHandler implements RoleHandler {
                 System.out.println("Please enter a valid input");
             }
 
-        } while (input != 11);
+        } while (input != 13);
         return false;
     }
 }

@@ -5,127 +5,177 @@
 package entity;
 
 /**
+ * The `Suggestion` class represents suggestions made by users regarding a specific camp.
+ * Each suggestion includes details, a status indicating whether it has been answered or not,
+ * and information about the user who made the suggestion and the camp to which it is related.
+ *
+ * Suggestions can be created, retrieved, and tracked within the system.
+ * Users can submit suggestions for improvement or feedback on camp-related matters.
  *
  * @author weiya
  */
 public class Suggestion {
-    
-    
-        private int id;
-	private String details;
-	private int campId;
-	private boolean status;
-        private int askedBy;
-        private int answeredBy;
-        
-	public Suggestion(int id, int campId, String details, boolean status, int askedBy, int answeredBy) {
-		this.id = id;
-                this.campId = campId;
-                this.details = details;
-                this.status = status;
-                this.askedBy = askedBy;
-                this.answeredBy = answeredBy;
-		
-	}
-        
-        //this constructor will be used to get suggestions that have not been answered.
-        public Suggestion(int id, int campId, String details, int askedBy) {
-		this.id = id;
-                this.campId = campId;
-                this.details = details;
-                this.askedBy = askedBy;
-		
-	}
-        //this constructor will be used to create suggestions
-        public Suggestion(int campId, String details, int askedBy) {
-                this.campId = campId;
-                this.details = details;
-                this.askedBy = askedBy;
-		
-	}
-	
-           /**
-     * @return the id
+
+
+    private int id;
+    private String details;
+    private int campId;
+    private boolean status;
+    private int askedBy;
+    private int answeredBy;
+    /**
+     * Constructs a new `Suggestion` object with the specified attributes.
+     *
+     * @param id The unique identifier of the suggestion.
+     * @param campId The ID of the camp to which the suggestion is related.
+     * @param details The details or content of the suggestion.
+     * @param status The status indicating whether the suggestion has been answered (true) or not (false).
+     * @param askedBy The ID of the user who made the suggestion.
+     * @param answeredBy The ID of the user who answered the suggestion (if applicable).
+     */
+    public Suggestion(int id, int campId, String details, boolean status, int askedBy, int answeredBy) {
+        this.id = id;
+        this.campId = campId;
+        this.details = details;
+        this.status = status;
+        this.askedBy = askedBy;
+        this.answeredBy = answeredBy;
+
+    }
+
+    /**
+     * Constructs a new `Suggestion` object with the specified attributes, excluding the status and answeredBy fields.
+     * This constructor is used to get suggestions that have not been answered yet.
+     *
+     * @param id The unique identifier of the suggestion.
+     * @param campId The ID of the camp to which the suggestion is related.
+     * @param details The details or content of the suggestion.
+     * @param askedBy The ID of the user who made the suggestion.
+     */
+    public Suggestion(int id, int campId, String details, int askedBy) {
+        this.id = id;
+        this.campId = campId;
+        this.details = details;
+        this.askedBy = askedBy;
+
+    }
+    /**
+     * Constructs a new `Suggestion` object with the specified attributes, excluding the status and answeredBy fields.
+     * This constructor is used to create new suggestions.
+     *
+     * @param campId The ID of the camp to which the suggestion is related.
+     * @param details The details or content of the suggestion.
+     * @param askedBy The ID of the user who made the suggestion.
+     */
+    public Suggestion(int campId, String details, int askedBy) {
+        this.campId = campId;
+        this.details = details;
+        this.askedBy = askedBy;
+
+    }
+
+    /**
+     * Retrieves the unique identifier of the suggestion.
+     *
+     * @return The suggestion's ID.
      */
     public int getId() {
         return id;
     }
-
     /**
-     * @param id the id to set
+     * Sets the unique identifier of the suggestion.
+     *
+     * @param id The suggestion's ID to set.
      */
     public void setId(int id) {
         this.id = id;
     }
-        
+
     /**
-     * @return the details
+     * Retrieves the details or content of the suggestion.
+     *
+     * @return The suggestion's details.
      */
     public String getDetails() {
         return details;
     }
-
     /**
-     * @param details the details to set
+     * Sets the details or content of the suggestion.
+     *
+     * @param details The suggestion's details to set.
      */
     public void setDetails(String details) {
         this.details = details;
     }
-
     /**
-     * @return the campId
+     * Retrieves the ID of the camp to which the suggestion is related.
+     *
+     * @return The camp's ID.
      */
     public int getCampId() {
         return campId;
     }
-
     /**
-     * @param campId the campId to set
+     * Sets the ID of the camp to which the suggestion is related.
+     *
+     * @param campId The camp's ID to set.
      */
     public void setCampId(int campId) {
         this.campId = campId;
     }
-
     /**
-     * @return the answer
+     * Retrieves the status of the suggestion, indicating whether it has been answered.
+     *
+     * @return `true` if the suggestion has been answered; `false` otherwise.
      */
     public boolean getStatus() {
         return status;
     }
 
     /**
-     * @param answer the answer to set
+     * Sets the status of the suggestion, indicating whether it has been answered.
+     *
+     * @param status The suggestion's status to set (`true` for answered, `false` for unanswered).
      */
     public void setStatus(boolean status) {
         this.status = status;
     }
 
     /**
-     * @return the askedBy
+     * Retrieves the ID of the user who made the suggestion.
+     *
+     * @return The user's ID who made the suggestion.
      */
     public int getAskedBy() {
         return askedBy;
     }
 
     /**
-     * @param askedBy the askedBy to set
+     * Sets the ID of the user who made the suggestion.
+     *
+     * @param askedBy The user's ID who made the suggestion to set.
      */
     public void setAskedBy(int askedBy) {
         this.askedBy = askedBy;
     }
 
     /**
-     * @return the answeredBy
+     * Retrieves the ID of the user who answered the suggestion (if applicable).
+     *
+     * @return The user's ID who answered the suggestion.
      */
     public int getAnsweredBy() {
         return answeredBy;
     }
 
     /**
-     * @param answeredBy the answeredBy to set
+     * Sets the ID of the user who answered the suggestion (if applicable).
+     *
+     * @param answeredBy The user's ID who answered the suggestion to set.
      */
+
     public void setAnsweredBy(int answeredBy) {
         this.answeredBy = answeredBy;
     }
-    
+
 }

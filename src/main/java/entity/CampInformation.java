@@ -1,8 +1,14 @@
 package entity;
-
+/**
+ * The `CampInformation` class represents information about a camp, including its name, location,
+ * description, dates, slots, staff in charge, faculty open to, and visibility status.
+ * This class is used to store and retrieve camp details.
+ *
+ * @author weiya
+ */
 import java.util.Date;
  public class CampInformation {
-     
+
     private int campId;
     private String name;
     private String location;
@@ -16,7 +22,22 @@ import java.util.Date;
     private Faculty facultyOpenTo;
     private boolean visibility;
 
-    /* Constructor to initialise Camp Information */
+
+     /**
+      * Constructs a new `CampInformation` object with the specified attributes.
+      *
+      * @param name The name of the camp.
+      * @param location The location of the camp.
+      * @param description The description of the camp.
+      * @param startDate The start date of the camp.
+      * @param endDate The end date of the camp.
+      * @param closingDate The closing date for registrations.
+      * @param participantSlots The number of participant slots available.
+      * @param campCommSlots The number of camp committee slots available.
+      * @param staffInCharge The ID of the staff member in charge.
+      * @param facultyOpenTo The faculty to which the camp is open.
+      * @param visibility The visibility status of the camp.
+      */
     public CampInformation(String name, String location,String description, Date startDate, Date endDate, Date closingDate, int participantSlots,int campCommSlots, int staffInCharge, Faculty facultyOpenTo, boolean visibility){
         // validation for campCommittee Slots is to be done inside the ui portion
 //        this.campId = UUIDGenerator.generate();
@@ -32,9 +53,23 @@ import java.util.Date;
         this.facultyOpenTo = facultyOpenTo;
         this.visibility = visibility;
     }
-    
-    //for retrieving camps that are already created.
-     public CampInformation(int id, String name, String location,String description, Date startDate, Date endDate, Date closingDate, int participantSlots,int campCommSlots, int staffInCharge, Faculty facultyOpenTo, boolean visibility){
+
+     /**
+      * Constructs a new `CampInformation` object with the specified attributes, including an ID.
+      *
+      * @param id The unique identifier of the camp information.
+      * @param name The name of the camp.
+      * @param location The location of the camp.
+      * @param description The description of the camp.
+      * @param startDate The start date of the camp.
+      * @param endDate The end date of the camp.
+      * @param closingDate The closing date for registrations.
+      * @param participantSlots The number of participant slots available.
+      * @param campCommSlots The number of camp committee slots available.
+      * @param staffInCharge The ID of the staff member in charge.
+      * @param facultyOpenTo The faculty to which the camp is open.
+      * @param visibility The visibility status of the camp.
+      */     public CampInformation(int id, String name, String location,String description, Date startDate, Date endDate, Date closingDate, int participantSlots,int campCommSlots, int staffInCharge, Faculty facultyOpenTo, boolean visibility){
         // validation for campCommittee Slots is to be done inside the ui portion
         this.campId = id;
         this.name = name;
@@ -50,7 +85,7 @@ import java.util.Date;
         this.facultyOpenTo = facultyOpenTo;
         this.visibility = visibility;
     }
-    
+
     // write get and set methods for each
     public String getName(){
         return name;
@@ -82,7 +117,7 @@ import java.util.Date;
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
-    
+
     public Date getClosingDate(){
         return closingDate;
     }
@@ -92,11 +127,11 @@ import java.util.Date;
     public int getCampCommSlots(){
         return campCommSlots;
     }
-    
+
     public int getRemainingSlots() {//TODO FILLER METHOD
     	return 0; //NOT COMPLETED
     }
-    
+
     public int getStaffInCharge(){
         return staffInCharge;
     }

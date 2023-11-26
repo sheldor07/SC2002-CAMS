@@ -3,7 +3,16 @@ package UI.Portal;
 import UI.*;
 import controller.UserController;
 import entity.User;
-
+/**
+ * The `CampCommiteePageHandler` class is responsible for managing the user interface and actions
+ * specific to camp committee members in the CAMs (Camp Administration Management System) application.
+ * It handles camp-related operations such as registering for camps, submitting and managing enquiries
+ * and suggestions, generating reports, and changing the user's password.
+ *
+ * This class implements the `RoleHandler` interface to provide role-specific functionality.
+ *
+ * @author weiya
+ */
 public class CampCommiteePageHandler implements RoleHandler {
     private User user;
     private UserUI userUI;
@@ -12,6 +21,12 @@ public class CampCommiteePageHandler implements RoleHandler {
     private SuggestionUI suggestionUI;
     private ReportUI reportUI;
     private UserController userC;
+    /**
+     * Constructs a new `CampCommiteePageHandler` instance with the specified user and controller.
+     *
+     * @param user The camp committee member user.
+     * @param userC The user controller used for user-related actions.
+     */
     public CampCommiteePageHandler(User user, UserController userC) {
         this.user = user;
         this.userUI = new UserUI(user);
@@ -22,6 +37,14 @@ public class CampCommiteePageHandler implements RoleHandler {
         this.reportUI.setCampIdForCommittee(user.getId()); // Assuming this sets the campId correctly
         this.userC = userC;
     }
+    /**
+     * Displays the camp committee member's user interface and handles user interactions.
+     * The method allows camp committee members to perform various actions within the system,
+     * including registering for camps, managing enquiries and suggestions, generating reports,
+     * and changing their password.
+     *
+     * @return `true` if the user wants to exit the camp committee page, `false` otherwise.
+     */
 
     @Override
     public boolean displayPage() {
