@@ -14,7 +14,7 @@ import java.util.ArrayList;
  *
  * @author weiya
  */
-public class CampParticipantController {
+public class CampParticipantController implements iCampParticipantController {
     CampParticipantDatabase campParticipantDatabase;
     CampController campController;
     
@@ -23,26 +23,32 @@ public class CampParticipantController {
         campController = new CampController();
     }
     
+    @Override
     public void refreshCampDatabase(){
         campParticipantDatabase = new CampParticipantDatabase("camp_participants");
     }
    
+    @Override
    public ArrayList<CampParticipant> getAllParticipants(){
        return campParticipantDatabase.getList();
    }
    
+    @Override
    public ArrayList<CampParticipant> getListByStudentId(int studentId){
        return campParticipantDatabase.getListByStudentId(studentId);
    }
+    @Override
    public CampParticipant getCommitteeByStudentId(int studentId){
        return campParticipantDatabase.getCommitteeByStudentId(studentId);
    }
 
+    @Override
    public ArrayList<CampParticipant> getListByCampId(int campId){
 //        System.out.println("campId: " + campId);
        return campParticipantDatabase.getListByCampId(campId);
    }
    
+    @Override
    public boolean registerAsParticipant(User user, Camp camp) {
 
         ArrayList<CampParticipant> campParticipants = campParticipantDatabase.getList();
@@ -77,6 +83,7 @@ public class CampParticipantController {
 		
 	}
 
+    @Override
 	public boolean registerAsCommittee(User user, Camp camp) {
 
         ArrayList<CampParticipant> campParticipants = campParticipantDatabase.getList();
@@ -107,6 +114,7 @@ public class CampParticipantController {
              return result;
 	}
 
+    @Override
 	public boolean withdraw(Camp camp,int id, ParticipantFilter participantFilter) {
         campController.withdrawParticipant(camp, participantFilter);
 
@@ -117,6 +125,7 @@ public class CampParticipantController {
 
 
 	}
+    @Override
     public ArrayList<CampParticipant> getListOfCampCommitteeByCampId(int campId){
         ArrayList<CampParticipant> campParticipants = campParticipantDatabase.getListByCampId(campId);
         ArrayList<CampParticipant> campCommittee = new ArrayList<>();
@@ -128,6 +137,7 @@ public class CampParticipantController {
         return campCommittee;
     }
 
+    @Override
     public boolean isCampCommittee(int campId, int studentId){
         ArrayList<CampParticipant> campParticipants = campParticipantDatabase.getListByCampId(campId);
         for(CampParticipant c : campParticipants){
@@ -136,7 +146,8 @@ public class CampParticipantController {
             }
         }
         return false;
-    }public int getCampIdByCampCommitteeID(int campCommitteeID) {
+    }@Override
+    public int getCampIdByCampCommitteeID(int campCommitteeID) {
         ArrayList<CampParticipant> campParticipants = campParticipantDatabase.getList();
         for (CampParticipant c : campParticipants) {
             if (c.getId() == campCommitteeID && c.isCampCommittee()) {
