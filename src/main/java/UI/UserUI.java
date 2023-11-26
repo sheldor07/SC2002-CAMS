@@ -117,13 +117,6 @@ public class UserUI extends UI{
            return input;
     }
     
-    public void displayUserInfo(){
-        System.out.println("Name: "+user.getName());
-        System.out.println("Email: "+user.getEmail());
-        System.out.println("Faculty: "+user.getFaculty());
-        System.out.println();
-    }
-    
     
     
     

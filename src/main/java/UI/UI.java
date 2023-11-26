@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.Scanner;
 
 public class UI {
-	 User user;
+    User user;
          Scanner sc;
          SimpleDateFormat dateFormat;
 	UI(User user){
@@ -57,7 +57,7 @@ public class UI {
          
             return someString;
         }
-        
+
         public Date dateValidator(String message){
             Date someDate = null;
             boolean valid = false;
