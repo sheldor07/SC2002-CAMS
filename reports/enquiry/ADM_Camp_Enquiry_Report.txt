@@ -1,0 +1,24 @@
+============================================
+           ENQUIRY REPORT FOR CAMP          
+============================================
+Camp Name: ADM Camp
+Camp Location: School of ADM
+Camp Description: ADM Camp
+Camp Start Date: Mon Dec 11 00:00:00 SGT 2023
+Camp End Date: Thu Dec 14 00:00:00 SGT 2023
+
+--------------------------------------------
+                   ENQUIRIES                
+--------------------------------------------
+Enquiry ID: 1
+Enquiry Details: is food provided?
+Asked By (User ID): 7
+Answer: Yes
+Answered By (Staff ID): 2
+--------------------------------------------
+Enquiry ID: 2
+Enquiry Details: Is water provided?
+Asked By (User ID): 7
+Answer: No
+Answered By (Staff ID): 12
+--------------------------------------------
