@@ -35,7 +35,7 @@ public class StudentPageHandler implements RoleHandler {
             else if (input == 2) {
                 boolean userSignedUpAsCommittee = campUI.registerCampUI();
                 if (userSignedUpAsCommittee) {
-                    break;
+                    return false;
                 }
             } else if (input == 3) {
                 campUI.showRegisteredCamps();

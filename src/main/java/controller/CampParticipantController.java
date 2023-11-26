@@ -57,7 +57,7 @@ public class CampParticipantController {
        
        iParticipantRegistrationHandler handler = new ParticipantRegistrationHandler();
        
-       return handler.registerAsParticipant(user, camp);
+       return handler.registerAsCommittee(user, camp);
 
 	}
 

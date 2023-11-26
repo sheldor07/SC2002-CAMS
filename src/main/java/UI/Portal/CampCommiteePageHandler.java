@@ -44,6 +44,7 @@ public class CampCommiteePageHandler implements RoleHandler {
                 campUI.showRegisteredCamps();
             } else if (input == 4) {
                 campUI.withdrawCampUI();
+                return false;
             } else if (input == 5) {
                 enquiryUI.submitEnquiryUI();
             } else if (input == 6) {

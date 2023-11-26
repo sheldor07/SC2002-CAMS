@@ -35,7 +35,6 @@ private final ReportController reportController;
     public void setCampIdForCommittee(int campCommitteeId) {
 
             this.campId = campParticipantController.getCampIdByCampCommitteeID(campCommitteeId);
-            System.out.println("campId: " + campId);
 
     }
 

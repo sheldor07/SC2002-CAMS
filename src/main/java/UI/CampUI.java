@@ -233,7 +233,8 @@ public class CampUI extends UI {
 
 		System.out.println("These are the camps created by you.");
 		int count = 1;
-
+                
+                campController = new CampController();
 		ArrayList<Camp> campsCreatedByStaff = campController.getCampsByStaff(user.getId());
 		for(Camp c : campsCreatedByStaff){
 			if(c.getStaffInCharge() == user.getId()){
@@ -483,6 +484,7 @@ public class CampUI extends UI {
 	}
 
 	public void showAvailableCampsForStudent(User user) {//Shows what a regular student would see for the camp - Camp Name, description, remaining slots
+                campController = new CampController();
 		ArrayList<Camp> camps = campController.getCampsByFaculty(user);
 		ArrayList<Camp> availableCampsForStudent = new ArrayList();
                 campParticipantController = new CampParticipantController();
@@ -541,6 +543,7 @@ public class CampUI extends UI {
 	}
 
 	public void showRegisteredCamps(){
+            campParticipantController = new CampParticipantController();
             ArrayList<CampParticipant> campParticipants = campParticipantController.getListByStudentId(user.getId());
 
             int counter = 1;
@@ -562,6 +565,7 @@ public class CampUI extends UI {
         }
 
 	public void withdrawCampUI() {//Handles user input and output for withdrawing from a camp
+                campParticipantController = new CampParticipantController();
                 ArrayList<CampParticipant> participants = campParticipantController.getListByStudentId(user.getId());
 
                 if(!participants.isEmpty()){

@@ -91,7 +91,7 @@ public class ParticipantRegistrationHandler implements iParticipantRegistrationH
                 return false;
             }
              
-             CampParticipant campParticipant = new CampParticipant(max+1,camp.getId(),user.getId(),camp.getStaffInCharge(),false);
+             CampParticipant campParticipant = new CampParticipant(max+1,camp.getId(),user.getId(),camp.getStaffInCharge(),true);
             
              if(participantFilter == ParticipantFilter.ATTENDEE){
             camp.setParticipantSlots(camp.getParticipantSlots()-1);

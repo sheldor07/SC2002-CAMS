@@ -26,16 +26,21 @@ public class Portal {
         do {
             userC = new UserController();
             User user = userC.login();
-
+            do {
             if (user == null) {
-                logout = true;
+                
+                logout = false;
             } else {
+                if(user instanceof CampCommittee){
+                user = userC.checkIfStudentIsCampCommittee((Student)user);
+                }
                 System.out.println("Welcome " + user.getName());
                 RoleHandler roleHandler = RoleHandlerFactory.getHandler(user, userC);
                 if (roleHandler != null) {
-                    roleHandler.displayPage();
+                     logout = roleHandler.displayPage();
                 }
             }
         } while (!logout);
-    }
+       }while(true);
+        }
 }

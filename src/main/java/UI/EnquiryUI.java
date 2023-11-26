@@ -47,6 +47,7 @@ public class EnquiryUI extends UI{
     private EnquiryController enquiryController;
 
     public void printListOfProcessedEnquiry(){//Printing list of processed enquiries i.e replied enquiries
+        enquiryController = new EnquiryController();
         listOfProcessedEnquiry = enquiryController.getAnsweredEnquiryByStudentId(user.getId());
         int counter;
         StudentController studentController = new StudentController();
@@ -80,6 +81,7 @@ public class EnquiryUI extends UI{
 
     //print list of user by staffId
     public void printListOfUserEnquiry(){//Printing list of enquiries that User asked
+         enquiryController = new EnquiryController();
         listOfUnprocessedUserEnquiries = new ArrayList<Enquiry>();
         CampController campController = new CampController();
         ArrayList<Camp> camps = new ArrayList();
@@ -138,6 +140,7 @@ public class EnquiryUI extends UI{
     }
 
     public void printListOfUnprocessedEnquiry() {
+         enquiryController = new EnquiryController();
         listOfUnprocessedEnquiry = enquiryController.getUnansweredEnquiriesByStudentId(user.getId());
         int counter;
         StudentController sC = new StudentController();
@@ -164,7 +167,7 @@ public class EnquiryUI extends UI{
 
 
     public void submitEnquiryUI(){
-
+     enquiryController = new EnquiryController();
         // we are reusing one of CampUI method to show available camp for a particular student.
         CampUI campUI = new CampUI(user);
         ArrayList<Camp> camps = campController.getCampsByFaculty(user);
