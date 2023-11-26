@@ -16,6 +16,7 @@ public class StaffPageHandler implements RoleHandler {
 
     public StaffPageHandler(User user, UserController userC) {
         this.user = user;
+        this.reportUI = new ReportUI(user);
         this.userUI = new UserUI(user);
         this.campUI = new CampUI(user);
         this.enquiryUI = new EnquiryUI(user);

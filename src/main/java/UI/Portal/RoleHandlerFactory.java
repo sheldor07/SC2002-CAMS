@@ -13,13 +13,15 @@ public class RoleHandlerFactory {
         return user instanceof CampCommittee;
     }
     public static RoleHandler getHandler(User user, UserController userC) {
-        if (user instanceof Student) {
-            return new StudentPageHandler(user, userC);
-        } else if (user instanceof Staff) {
+        if(user instanceof Staff){
             return new StaffPageHandler(user, userC);
-        } else if (checkIfStudentIsCampCommittee((Student) user)){
+        }
+        else if (checkIfStudentIsCampCommittee((Student) user)){
             return new CampCommiteePageHandler(user, userC);
         }
-        return null;
+        else{
+            return new StudentPageHandler(user, userC);
+        } 
+
     }
 }

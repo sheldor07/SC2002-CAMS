@@ -123,20 +123,12 @@ public class UserController {
     
 
         public User checkIfStudentIsCampCommittee(Student student){
+            
             //checking campparticipant database to see if user is campcommitee
-        CampParticipantController campParticipantController = new CampParticipantController();
-         ArrayList<CampParticipant> campParticipants = campParticipantController.getAllParticipants();
-         
-         for(CampParticipant c : campParticipants)
-         {    
-             if(c.getStudentId() == student.getId() && c.isCampCommittee()){                 
-                 return new CampCommittee(student.getId(),student.getName(),student.getEmail(),student.getPassword(),student.getFaculty());
-                 
-             }
-         }
-             
-        
-        return student;
+            
+            iCampCommitteeChecker campCommitteeChecker = new CampCommitteeChecker();
+            
+            return campCommitteeChecker.studentChecker(student);
         
     }
     
