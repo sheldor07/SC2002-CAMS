@@ -485,7 +485,7 @@ public class CampUI extends UI {
 	public void showAvailableCampsForStudent(User user) {//Shows what a regular student would see for the camp - Camp Name, description, remaining slots
 		ArrayList<Camp> camps = campController.getCampsByFaculty(user);
 		ArrayList<Camp> availableCampsForStudent = new ArrayList();
-
+                campParticipantController = new CampParticipantController();
 		ArrayList<CampParticipant> participants = campParticipantController.getListByStudentId(user.getId());
 
 		//9 - 13 c
@@ -564,6 +564,7 @@ public class CampUI extends UI {
 	public void withdrawCampUI() {//Handles user input and output for withdrawing from a camp
                 ArrayList<CampParticipant> participants = campParticipantController.getListByStudentId(user.getId());
 
+                if(!participants.isEmpty()){
                 System.out.println("You have signed up for these camps: ");
                 int count = 1;
                ArrayList<Camp> camps = new ArrayList();
@@ -612,8 +613,9 @@ public class CampUI extends UI {
                         participantFilter = ParticipantFilter.CAMP_COMMITTEE;
                     }
 			System.out.println("Withdrawing you from " + campInfo.getName() + "...");
-			if(campParticipantController.withdraw(camp, chosenCampParticipant.getId(), participantFilter)) {
+			if(campController.withdrawParticipant(camp, chosenCampParticipant.getId(), participantFilter)) {
 				System.out.println("Withdrawal successful!");
+                                campParticipantController.refreshCampParticipantDatabase();
 			}
 			
 			else {
@@ -627,6 +629,12 @@ public class CampUI extends UI {
 		
 		
 	}
+        
+        else
+        {
+            System.out.println("You have not signed up for any camps.");
+        }
 
+        }
 }
 
