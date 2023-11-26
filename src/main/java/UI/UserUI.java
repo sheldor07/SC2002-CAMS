@@ -36,8 +36,7 @@ public class UserUI extends UI{
     }
     
     public int displayStaffMenu(){
-        
-        System.out.println("Welcome "+user.getName());
+
         int input = 0;
             
             String message = "(1) Create camp\n"
@@ -51,7 +50,8 @@ public class UserUI extends UI{
                     + "(9) Generate student list report for your camp\n"
                     + "(10) Generate performance report for your camp\n"
                     + "(11) Generate enquiry report for your camp\n"
-                    + "(12) Exit\n"
+                    + "(12) Change password\n"
+                    + "(13) Exit\n"
                     + "Enter the number of your choice: ";
            
            
@@ -105,9 +105,10 @@ public class UserUI extends UI{
                     + "(13) Edit submitted camp suggestions\n"
                     + "(14) Delete submitted camp suggestions\n"
             //
-                    + "(15) Generate report for your camp\n"
-                    + "(16) Change password\n"
-                    + "(17) Exit\n"
+                    + "(15) Generate student report for your camp\n"
+                    + "(16) Generate enquiry report for your camp\n"
+                    + "(17) Change password\n"
+                    + "(18) Exit\n"
                     + "Enter the number of your choice: ";
            
            

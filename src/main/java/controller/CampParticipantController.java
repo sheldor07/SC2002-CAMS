@@ -136,5 +136,14 @@ public class CampParticipantController {
             }
         }
         return false;
+    }public int getCampIdByCampCommitteeID(int campCommitteeID) {
+        ArrayList<CampParticipant> campParticipants = campParticipantDatabase.getList();
+        for (CampParticipant c : campParticipants) {
+            if (c.getId() == campCommitteeID && c.isCampCommittee()) {
+                return c.getCampId();
+            }
+        }
+        return -1; // or any other indication that the camp ID was not found
     }
+
 }

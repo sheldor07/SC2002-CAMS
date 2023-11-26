@@ -32,6 +32,12 @@ private final ReportController reportController;
         reportController = new ReportController();
         enquiryController = new EnquiryController();
     }
+    public void setCampIdForCommittee(int campCommitteeId) {
+
+            this.campId = campParticipantController.getCampIdByCampCommitteeID(campCommitteeId);
+            System.out.println("campId: " + campId);
+
+    }
 
     public int showListOfCamps() {
         ArrayList<Camp> camps = campController.getCampsByStaff(user.getId());

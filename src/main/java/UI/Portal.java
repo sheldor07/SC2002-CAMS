@@ -109,6 +109,7 @@ public class Portal {
         EnquiryUI enquiryUI = new EnquiryUI(user);
         SuggestionUI suggestionUI = new SuggestionUI(user);
         ReportUI reportUI = new ReportUI(user);
+        reportUI.setCampIdForCommittee(user.getId());
 
         int input = 0;
         do {
@@ -175,7 +176,7 @@ public class Portal {
                 userC.changePassword();
                 break;
 
-            } else if (input == 12) {
+            } else if (input == 13) {
                 logout = true;
                 System.out.println("Thank you and see you again.");
                 break;
@@ -193,6 +194,8 @@ public class Portal {
         CampUI campUI = new CampUI(user);
         EnquiryUI enquiryUI = new EnquiryUI(user);
         SuggestionUI suggestionUI = new SuggestionUI(user);
+        ReportUI reportUI = new ReportUI(user);
+        reportUI.setCampIdForCommittee(user.getId()+1);
         int input = 0;
         do {
 
@@ -235,12 +238,20 @@ public class Portal {
             } else if (input == 14) {
                 suggestionUI.deleteUnansweredSuggestionUI();
             } else if (input == 15) {
+                // Check if a valid camp ID was selected
+                ParticipantFilter participantFilter = reportUI.askParticipantFilter();
+                reportUI.generateStudentListReport(participantFilter);
 
-            } else if (input == 16) {
+            }else if(input == 16){
+
+                // Show list of camps and let the staff member choose on
+                reportUI.generateEnquiryReport();
+
+            }else if (input == 17) {
                 userC.changePassword();
                 logout = true;
                 break;
-            } else if (input == 17) {
+            } else if (input == 18) {
                 logout = true;
                 System.out.println("Thank you and see you again.");
                 break;

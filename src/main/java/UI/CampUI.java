@@ -40,6 +40,7 @@ public class CampUI extends UI {
             String message = "";
                Date startDate = null, endDate = null, registrationDeadline = null;
                 int totalSlots = 0;
+				int campCommSlots = 0;
                 boolean visible = false;
 
                 System.out.println("Enter the Camp Details: ");
@@ -58,21 +59,32 @@ public class CampUI extends UI {
                 System.out.println("Input Camp Location: ");
                 String campLocation = sc.nextLine();
 
-//                message = "Input Faculty, Example: SCSE/SSS/NBS/NTU: ";
-//                Faculty faculty = facultyValidator(message);
+                message = "Input Faculty, Example: SCSE/SSS/NBS/NTU: ";
+                Faculty faculty = facultyValidator(message);
 
                 System.out.println("Input Description: ");
                 String description = sc.nextLine();
 
                 message = "Input Total Number of Slots: ";
                 totalSlots = integerValidator(message);
+				message = "Input Total Number of Committee Slots: ";
+				campCommSlots = integerValidator(message);
+				if(campCommSlots > totalSlots) {
+					System.out.println("Total number of committee slots cannot be more than total number of slots.");
+					return -1;
+				}
+			if(campCommSlots > 10 || campCommSlots < 0) {
+				System.out.println("Total number of committee slots cannot be negative.");
+				return -1;
+			}
+
 
                 message = "Set Camp Visible?(Visible = 1, Not Visible = 0): ";
                 visible = booleanValidator(message);
 
 
 
-                int result = campController.createCamp(new Camp(campName,campLocation, description, startDate, endDate, registrationDeadline, totalSlots, 10, user.getId(), user.getFaculty(),visible));
+                int result = campController.createCamp(new Camp(campName,campLocation, description, startDate, endDate, registrationDeadline, totalSlots, campCommSlots, user.getId(),faculty,visible));
 
                 return result;
         }
@@ -217,230 +229,310 @@ public class CampUI extends UI {
 		Scanner s = new Scanner(System.in);
 		String choice;
 		Date date;
-                String message = "";
+		String message = "";
 
-                System.out.println("These are the camps created by you.");
-                int count = 1;
+		System.out.println("These are the camps created by you.");
+		int count = 1;
 
-                ArrayList<Camp> campsCreatedByStaff = campController.getCampsByStaff(user.getId());
-                for(Camp c : campsCreatedByStaff){
-                if(c.getStaffInCharge() == user.getId()){
-                    System.out.println(count+") "+c.getName());
-                    count++;
-                }
+		ArrayList<Camp> campsCreatedByStaff = campController.getCampsByStaff(user.getId());
+		for(Camp c : campsCreatedByStaff){
+			if(c.getStaffInCharge() == user.getId()){
+				System.out.println(count+") "+c.getName());
+				count++;
+			}
 
-            }
-                int validInput = 0;
+		}
+		int validInput = 0;
 
-                do{
+		do{
 
-                System.out.println("Which camp would you like to edit?: ");
-                String campName = s.nextLine();
+			System.out.println("Which camp would you like to edit?: ");
+			String campName = s.nextLine();
 
-                    for(Camp c : campsCreatedByStaff){
-                if(campName.equals(c.getName())){
-                    setCamp(c);
-                    validInput = 1;
-                    break;
-                }
+			for(Camp c : campsCreatedByStaff){
+				if(campName.equals(c.getName())){
+					setCamp(c);
+					validInput = 1;
+					break;
+				}
 
-                    }
-                 if(validInput == 0)
-                     System.out.println("Please input a valid camp to edit");
+			}
+			if(validInput == 0)
+				System.out.println("Please input a valid camp to edit");
 
-                }while(validInput == 0);
+		}while(validInput == 0);
 
-                validInput = 0;
-                int num = 0;
+		validInput = 0;
+		int num = 0;
 
-                        message = ("Please enter the number of which piece of information you would like to edit: \n"
-                                + "1) Camp Name\n"
-                                + "2) Start Date\n"
-                                + "3) End Date\n"
-                                + "4) Registration Closing Date\n"
-                                + "5) Availability\n"
-                                + "6) Location\n"
-                                + "7) Total slots\n"
-                                + "8) Camp Description\n"
-                                + "9) Visibility\n"
-                                + "10) Cancel edit");
+		message = ("Please enter the number of which piece of information you would like to edit: \n"
+				+ "1) Camp Name\n"
+				+ "2) Start Date\n"
+				+ "3) End Date\n"
+				+ "4) Registration Closing Date\n"
+				+ "5) Availability\n"
+				+ "6) Location\n"
+				+ "7) Total slots\n"
+				+ "8) Camp Description\n"
+				+ "9) Visibility\n"
+				+ "10) Cancel edit");
 
 		num = integerValidator(message);
 
-                //specific number validator.
+		//specific number validator.
 		while(num < 1 || num > 10) {//Loops error msg + re-prompt if user picks anything outside of the range of choices
 			System.out.println("Incorrect input. Please try again.");
 			num = integerValidator(message);
 		}
-		int input = 0;
+		int input = 0, compare = 0, compare2;
+		Date startDateCompare, endDateCompare;
 		switch(num) {
 
-		case 1: //Change Camp Name
-			System.out.println("What would you like to change Camp Name to?");
-			choice = s.nextLine();
-			if(campController.changeName(campInfo.getCampId(), choice)) {
-				System.out.println("Camp Name change successful!");
-			}
-			else {
-				System.out.println("Error with Camp name change.");
-			}
-			break;
+			case 1: //Change Camp Name
+				System.out.println("What would you like to change Camp Name to?");
+				choice = s.nextLine();
+				if(campController.changeName(campInfo.getCampId(), choice)) {
+					System.out.println("Camp Name change successful!");
+				}
+				else {
+					System.out.println("Error with Camp name change.");
+				}
+				break;
 
 
-		case 2: //Change Start Date
-			message = "What would you like to change Start Date to? Example: 10/08/2023";
-                        Date startDate = dateValidator(message);
-                        if(campController.changeStartDate(campInfo.getCampId(), startDate)) {
-                                        System.out.println("Start Date change successful!");
-                        }
-                        break;
+			case 2: //Change Start Date
+				System.out.println("The current start date of your camp is: "+formatter.format(campInfo.getStartDate()));
+				System.out.println("The end date of your camp is: "+formatter.format(campInfo.getEndDate()));
+				System.out.println("The registration deadline of your camp is: "+formatter.format(campInfo.getClosingDate()));
 
-		case 3: //Change End Date
-			message = "What would you like to change End Date to? Example: 10/08/2023";
-                        Date endDate = dateValidator(message);
-                        if(campController.changeEndDate(campInfo.getCampId(), endDate)) {
-                                        System.out.println("End Date change successful!");
-                        }
-                        break;
+				message = "What would you like to change Start Date to? Example: 10/08/2023";
+				Date startDate = dateValidator(message);
+				endDateCompare = campInfo.getEndDate();
+				compare = endDateCompare.compareTo(startDate);
+				compare2 = campInfo.getClosingDate().compareTo(startDate);
 
-		case 4: //Change Registration Close Date
-			message = "What would you like to change Registraton Deadline to? Example: 10/08/2023";
-                        Date regDate = dateValidator(message);
-                        if(campController.changeRegCloseDate(campInfo.getCampId(), regDate)) {
-                                        System.out.println("Registraton Deadline change successful!");
-                        }
-                        break;
 
-		case 5: //Change availability
-                        input = 0;
-                        message = "Enter '1' to change to availability to all NTU, and '2' to change availability to own faculty only.";
-                        input = integerValidator(message);
+				while(compare <= 0 || compare2 >= 0){
+					System.out.println("Please enter a valid start date");
+					startDate = dateValidator(message);
+					compare = endDateCompare.compareTo(startDate);
+					compare2 = campInfo.getClosingDate().compareTo(startDate);
 
-			while(input != 1 && input != 2) {//Error msg + re-prompt if user chooses outside options
-				System.out.println("Incorrect input. Please try again.");
+
+				}
+
+				if(campController.changeStartDate(campInfo.getCampId(), startDate)) {
+					System.out.println("Start Date change successful!");
+				}
+				break;
+
+			case 3: //Change End Date
+				System.out.println("The start date of your camp is: "+formatter.format(campInfo.getStartDate()));
+				System.out.println("The current end date of your camp is: "+formatter.format(campInfo.getEndDate()));
+				System.out.println("The registration deadline of your camp is: "+formatter.format(campInfo.getClosingDate()));
+
+
+				message = "What would you like to change End Date to? Example: 13/08/2023";
+				Date endDate = dateValidator(message);
+
+				startDateCompare = campInfo.getStartDate();
+				compare = endDate.compareTo(startDateCompare);
+
+				while(compare <= 0){
+					System.out.println("Please enter a valid end date");
+					endDate = dateValidator(message);
+					compare = endDate.compareTo(startDateCompare);
+				}
+
+				if(campController.changeEndDate(campInfo.getCampId(), endDate)) {
+					System.out.println("End Date change successful!");
+				}
+				break;
+
+			case 4: //Change Registration Close Date
+				System.out.println("The start date of your camp is: "+formatter.format(campInfo.getStartDate()));
+				System.out.println("The end date of your camp is: "+formatter.format(campInfo.getEndDate()));
+				System.out.println("The current deadline of your camp is: "+formatter.format(campInfo.getClosingDate()));
+
+				message = "What would you like to change Registraton Deadline to? Example: 08/08/2023";
+				Date regDate = dateValidator(message);
+
+				startDateCompare = campInfo.getStartDate();
+				compare = regDate.compareTo(startDateCompare);
+
+				while(compare >= 0){
+					System.out.println("Please enter a valid registraion dateline");
+					regDate = dateValidator(message);
+					compare = regDate.compareTo(startDateCompare);
+				}
+
+				if(campController.changeRegCloseDate(campInfo.getCampId(), regDate)) {
+					System.out.println("Registraton Deadline change successful!");
+				}
+				break;
+
+			case 5: //Change availability
+				input = 0;
+				message = "Enter '1' to change to availability to all NTU, and '2' to change availability to own faculty only.";
 				input = integerValidator(message);
-			}
+
+				while(input != 1 && input != 2) {//Error msg + re-prompt if user chooses outside options
+					System.out.println("Incorrect input. Please try again.");
+					input = integerValidator(message);
+				}
 
 
-			if(input == 1) {//Change to NTU availability
-				if(campController.setFacultyTo(campInfo.getCampId(), Faculty.NTU)) {
-					System.out.println("Availability change successful!");
+				if(input == 1) {//Change to NTU availability
+					if(campController.setFacultyTo(campInfo.getCampId(), Faculty.NTU)) {
+						System.out.println("Availability change successful!");
+					}
+					else {
+						System.out.println("Availability change unsuccessful.");
+					}
+				}
+
+				else if (input == 2) {//Change to faculty availability
+					Faculty faculty = this.user.getFaculty();
+					if(campController.setFacultyTo(campInfo.getCampId(), faculty)){
+						System.out.println("Availability change successful!");
+					}
+					else {
+						System.out.println("Availability change unsuccessful.");
+					}
+				}
+				break;
+
+			case 6: //Change Location
+				System.out.println("What would you like to change location to?");
+				choice = s.nextLine();
+				if(campController.changeLocation(campInfo.getCampId(), choice)) {
+					System.out.println("Location change successful!");
 				}
 				else {
-					System.out.println("Availability change unsuccessful.");
+					System.out.println("Location change unsuccessful.");
 				}
-			}
+				break;
 
-			else if (input == 2) {//Change to faculty availability
-				Faculty faculty = this.user.getFaculty();
-				if(campController.setFacultyTo(campInfo.getCampId(), faculty)){
-					System.out.println("Availability change successful!");
-				}
-				else {
-					System.out.println("Availability change unsuccessful.");
-				}
-			}
-			break;
-
-		case 6: //Change Location
-			System.out.println("What would you like to change location to?");
-			choice = s.nextLine();
-			if(campController.changeLocation(campInfo.getCampId(), choice)) {
-				System.out.println("Location change successful!");
-			}
-			else {
-				System.out.println("Location change unsuccessful.");
-			}
-			break;
-
-		case 7: //Change Total Slots
-			System.out.println("What would you like to change Total Slots to?");
-			choice = s.nextLine();
-			int slots = Integer.parseInt(choice);
-
-			while(slots < 0) {
-				System.out.println("Total slots cannot be a negative number. Please try again.");
+			case 7: //Change Total Slots
 				System.out.println("What would you like to change Total Slots to?");
 				choice = s.nextLine();
-				slots = Integer.parseInt(choice);
-			}
+				int slots = Integer.parseInt(choice);
 
-			if(campController.changeCampParticipantSlots(campInfo.getCampId(), slots)){
-				System.out.println("Total Slots change successful!");
-			}
-			else {
-				System.out.println("Total Slots change unsuccessful.");
-			}
-			break;
+				while(slots < 0) {
+					System.out.println("Total slots cannot be a negative number. Please try again.");
+					System.out.println("What would you like to change Total Slots to?");
+					choice = s.nextLine();
+					slots = Integer.parseInt(choice);
+				}
 
-		case 8: //Change Camp Description
-			System.out.println("What would you like to change Camp Description to?");
-			choice = s.nextLine();
-			if(campController.changeDescription(campInfo.getCampId(), choice)) {
-				System.out.println("Description change successful!");
-			}
-			else {
-				System.out.println("Description change unsuccessful.");
-		 	}
-			break;
-
-		case 9: //Change Visibility
-                      message = "Enter '1' if you would like this camp to be visible to students. Enter '0' if you would like this camp to be hidden.";
-                        input = integerValidator(message);
-
-
-			while(input != 1 && input != 0) {//Error msg + re-prompt if user chooses outside options
-				System.out.println("Incorrect input. Please try again.");
-				 message = "Enter '1' if you would like this camp to be visible to students. Enter '0' if you would like this camp to be hidden.";
-                                input = integerValidator(message);
-			}
-
-			if(input == 1) {//Change to visible
-				if(campController.changeVisibility(campInfo.getCampId(), true)){
-					System.out.println("Visibility change successful!");
+				if(campController.changeCampParticipantSlots(campInfo.getCampId(), slots)){
+					System.out.println("Total Slots change successful!");
 				}
 				else {
-					System.out.println("Visibility change unsuccessful.");
+					System.out.println("Total Slots change unsuccessful.");
 				}
-			}
-			else if(input == 0) {//Change to invisible
-				if(campController.changeVisibility(campInfo.getCampId(), false)) {
-					System.out.println("Visibility change successful!");
+				break;
+
+			case 8: //Change Camp Description
+				System.out.println("What would you like to change Camp Description to?");
+				choice = s.nextLine();
+				if(campController.changeDescription(campInfo.getCampId(), choice)) {
+					System.out.println("Description change successful!");
 				}
 				else {
-					System.out.println("Visibility change unsuccessful.");
+					System.out.println("Description change unsuccessful.");
 				}
-			}
-			break;
+				break;
 
-		case 10:
-			System.out.println("Cancelling edit process.");
-			break;
+			case 9: //Change Visibility
+				message = "Enter '1' if you would like this camp to be visible to students. Enter '0' if you would like this camp to be hidden.";
+				input = integerValidator(message);
+
+
+				while(input != 1 && input != 0) {//Error msg + re-prompt if user chooses outside options
+					System.out.println("Incorrect input. Please try again.");
+					message = "Enter '1' if you would like this camp to be visible to students. Enter '0' if you would like this camp to be hidden.";
+					input = integerValidator(message);
+				}
+
+				if(input == 1) {//Change to visible
+					if(campController.changeVisibility(campInfo.getCampId(), true)){
+						System.out.println("Visibility change successful!");
+					}
+					else {
+						System.out.println("Visibility change unsuccessful.");
+					}
+				}
+				else if(input == 0) {//Change to invisible
+					if(campController.changeVisibility(campInfo.getCampId(), false)) {
+						System.out.println("Visibility change successful!");
+					}
+					else {
+						System.out.println("Visibility change unsuccessful.");
+					}
+				}
+				break;
+
+			case 10:
+				System.out.println("Cancelling edit process.");
+				break;
 
 		}
 
 
 	}
 
-        public void showAvailableCampsForStudent(User user) {//Shows what a regular student would see for the camp - Camp Name, description, remaining slots
-                ArrayList<Camp> camps = campController.getCampsByFaculty(user);
+	public void showAvailableCampsForStudent(User user) {//Shows what a regular student would see for the camp - Camp Name, description, remaining slots
+		ArrayList<Camp> camps = campController.getCampsByFaculty(user);
+		ArrayList<Camp> availableCampsForStudent = new ArrayList();
 
-                int counter = 1;
-                if(!camps.isEmpty()){
-                for(Camp c : camps){
-                setCamp(c);
-                System.out.println("");
-                System.out.println(counter+")"+ "Camp Name: " + camp.getName());
-		System.out.println("Description: " + camp.getDescription());
-		System.out.println("Remaining slots: " + camp.getParticipantSlots());
-                counter++;
-                }
-                }else{
-                    System.out.println("There are no camps available at this moment.");
-                }
-                System.out.println("");
+		ArrayList<CampParticipant> participants = campParticipantController.getListByStudentId(user.getId());
+
+		//9 - 13 c
+		//8 - 10 camp
+		if(!participants.isEmpty()){
+			for(Camp camp : camps){
+				for(CampParticipant participant: participants){
+					Camp c = campController.getCampById(participant.getCampId());
+//                       /(StartDate1 <= EndDate2) and (StartDate2 <= EndDate1)
+					if(c.getStartDate().compareTo(camp.getEndDate()) <= 0
+							&& camp.getStartDate().compareTo(c.getEndDate()) <= 0){
+//                            date overlaps, do not add the camp in to avaialble camp.
+					}
+					else{
+						availableCampsForStudent.add(camp);
+
+					}
+				}
+			}
+		}
+		else{
+			for(Camp c: camps){
+				availableCampsForStudent.add(c);
+
+			}
+
+		}
+
+
+		int counter = 1;
+		if(!availableCampsForStudent.isEmpty()){
+			for(Camp c : availableCampsForStudent){
+				setCamp(c);
+				System.out.println("");
+				System.out.println(counter+")"+ "Camp Name: " + campInfo.getName());
+				System.out.println("Description: " + campInfo.getDescription());
+				System.out.println("Remaining slots: " + camp.getParticipantSlots());
+				System.out.println("Start Date: "+formatter.format(campInfo.getStartDate()));
+				System.out.println("End Date: "+formatter.format(campInfo.getEndDate()));
+				System.out.println("Registration Deadline: "+formatter.format(campInfo.getClosingDate()));
+				counter++;
+			}
+		}else{
+			System.out.println("There are no camps available at this moment.");
+		}
+		System.out.println("");
 	}
-
 
 	public void viewEnquiry() {
 
@@ -512,7 +604,7 @@ public class CampUI extends UI {
 
                     }
                  if(validInput == 0)
-                     System.out.println("Please input a valid camp to edit");
+                     System.out.println("Please input a valid camp to withdraw from");
 
                 }while(validInput == 0);
 

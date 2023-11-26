@@ -1,15 +1,18 @@
 ============================================
            CAMP REPORT DETAILS              
 ============================================
-Camp Name: ADM Camp
-Camp Location: dsad
-Camp Description: dsa
-Camp Start Date: Fri Aug 11 00:00:00 SGT 2023
-Camp End Date: Mon Aug 14 00:00:00 SGT 2023
+Camp Name: SCSE Camp
+Camp Location: dsa
+Camp Description: campyy
+Camp Start Date: Thu Aug 10 00:00:00 SGT 2023
+Camp End Date: Sun Aug 13 00:00:00 SGT 2023
 
 --------------------------------------------
               PARTICIPANTS                  
 --------------------------------------------
-Student Name: KOH
+Student Name: CHERN
 Student Role: Attendee
+--------------------------------------------
+Student Name: LEE
+Student Role: Camp Committee
 --------------------------------------------
