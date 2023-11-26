@@ -17,17 +17,14 @@ public class CampUI extends UI {
             super(user);
             campController = new CampController();
             campParticipantController = new CampParticipantController();
-            participantList = new ArrayList<Student>();
-            committeeList = new ArrayList<Student>(); 
 
         }
 	private CampInformation campInfo;
         private Camp camp;
 	private CampController campController;
         private CampParticipantController campParticipantController;
-	
-	ArrayList<Student> participantList;
-	ArrayList<Student> committeeList;
+
+            ArrayList<Camp> availableCampsForStudent;
 	
 	private SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         
@@ -46,14 +43,32 @@ public class CampUI extends UI {
                 System.out.println("Input Camp Name: ");
                 String campName = sc.nextLine();
                       
-                message = "Input Start Date, Example: 10/08/1999: ";
+                message = "Input Start Date, Example: 10/08/2023: ";
                 startDate = dateValidator(message);
                 
-                message = "Input End Date, Example: 10/08/1999: ";
+                message = "Input End Date, Example: 13/08/2023: ";
                 endDate = dateValidator(message);
+                
+                int compare = endDate.compareTo(startDate);
+
+                while(compare <= 0){
+                    System.out.println("Please enter a valid end date");
+                    message = "Input End Date, Example: 13/08/2023: ";
+                    endDate = dateValidator(message);
+                    compare = endDate.compareTo(startDate);
+                }
            
-                message = "Input Registration Deadline, Example: 10/08/1999: ";
+                message = "Input Registration Deadline, Example: 08/08/2023: ";
                 registrationDeadline = dateValidator(message);
+                
+                compare = registrationDeadline.compareTo(startDate);
+
+                while(compare >= 0){
+                    System.out.println("Please enter a valid registration deadline.");
+                    message = "Input Registration Deadline, Example: 08/08/2023: ";
+                    registrationDeadline = dateValidator(message);
+                    compare = registrationDeadline.compareTo(startDate);
+                }
            
                 System.out.println("Input Camp Location: ");
                 String campLocation = sc.nextLine();
@@ -140,7 +155,7 @@ public class CampUI extends UI {
                     System.out.println("Please enter the camp you wish to join: ");
                     String campInput = sc.nextLine();
                     
-                    for(Camp c: camps){
+                    for(Camp c: availableCampsForStudent){
                         if(campInput.equals(c.getName()))
                         {   
                             camp = c;
@@ -272,7 +287,8 @@ public class CampUI extends UI {
 			System.out.println("Incorrect input. Please try again.");
 			num = integerValidator(message);
 		}
-		int input = 0;
+		int input = 0, compare = 0, compare2;
+                Date startDateCompare, endDateCompare;
 		switch(num) {
 		
 		case 1: //Change Camp Name
@@ -288,24 +304,71 @@ public class CampUI extends UI {
 			
 			
 		case 2: //Change Start Date
+                        System.out.println("The current start date of your camp is: "+formatter.format(campInfo.getStartDate()));
+                        System.out.println("The end date of your camp is: "+formatter.format(campInfo.getEndDate()));
+                        System.out.println("The registration deadline of your camp is: "+formatter.format(campInfo.getClosingDate()));
+
 			message = "What would you like to change Start Date to? Example: 10/08/2023";
                         Date startDate = dateValidator(message);
+                        endDateCompare = campInfo.getEndDate();
+                        compare = endDateCompare.compareTo(startDate);
+                        compare2 = campInfo.getClosingDate().compareTo(startDate);
+
+
+                        while(compare <= 0 || compare2 >= 0){
+                            System.out.println("Please enter a valid start date");
+                            startDate = dateValidator(message);
+                            compare = endDateCompare.compareTo(startDate);
+                            compare2 = campInfo.getClosingDate().compareTo(startDate);
+                            
+
+                        }
+                        
                         if(campController.changeStartDate(campInfo.getCampId(), startDate)) {
                                         System.out.println("Start Date change successful!");
                         }
                         break;
 			
 		case 3: //Change End Date
-			message = "What would you like to change End Date to? Example: 10/08/2023";
+                     System.out.println("The start date of your camp is: "+formatter.format(campInfo.getStartDate()));
+                     System.out.println("The current end date of your camp is: "+formatter.format(campInfo.getEndDate()));
+                     System.out.println("The registration deadline of your camp is: "+formatter.format(campInfo.getClosingDate()));
+
+                    
+			message = "What would you like to change End Date to? Example: 13/08/2023";
                         Date endDate = dateValidator(message);
+                        
+                        startDateCompare = campInfo.getStartDate();
+                        compare = endDate.compareTo(startDateCompare);
+
+                        while(compare <= 0){
+                            System.out.println("Please enter a valid end date");
+                            endDate = dateValidator(message);
+                            compare = endDate.compareTo(startDateCompare);
+                        }
+                        
                         if(campController.changeEndDate(campInfo.getCampId(), endDate)) {
                                         System.out.println("End Date change successful!");
                         }
                         break;
 			
 		case 4: //Change Registration Close Date
-			message = "What would you like to change Registraton Deadline to? Example: 10/08/2023";
+                    System.out.println("The start date of your camp is: "+formatter.format(campInfo.getStartDate()));
+                    System.out.println("The end date of your camp is: "+formatter.format(campInfo.getEndDate()));
+                    System.out.println("The current deadline of your camp is: "+formatter.format(campInfo.getClosingDate()));
+
+			message = "What would you like to change Registraton Deadline to? Example: 08/08/2023";
                         Date regDate = dateValidator(message);
+                                                
+                        startDateCompare = campInfo.getStartDate();
+                        compare = regDate.compareTo(startDateCompare);
+
+                        while(compare >= 0){
+                            System.out.println("Please enter a valid registraion dateline");
+                            regDate = dateValidator(message);
+                            compare = regDate.compareTo(startDateCompare);
+                        }
+                        
                         if(campController.changeRegCloseDate(campInfo.getCampId(), regDate)) {
                                         System.out.println("Registraton Deadline change successful!");
                         }
@@ -424,40 +487,54 @@ public class CampUI extends UI {
         
         public void showAvailableCampsForStudent(User user) {//Shows what a regular student would see for the camp - Camp Name, description, remaining slots
                 ArrayList<Camp> camps = campController.getCampsByFaculty(user);
+                availableCampsForStudent = new ArrayList();
+                
+                ArrayList<CampParticipant> participants = campParticipantController.getListByStudentId(user.getId());
+                
+                //9 - 13 c
+                //8 - 10 camp
+                if(!participants.isEmpty()){
+                for(Camp camp : camps){
+                    for(CampParticipant participant: participants){
+                       Camp c = campController.getCampById(participant.getCampId());
+//                       /(StartDate1 <= EndDate2) and (StartDate2 <= EndDate1)
+                        if(c.getStartDate().compareTo(camp.getEndDate()) <= 0 
+                           && camp.getStartDate().compareTo(c.getEndDate()) <= 0){
+//                            date overlaps, do not add the camp in to avaialble camp.
+                        }
+                        else{
+                            availableCampsForStudent.add(camp);
+
+                        }
+                    }
+                }
+                }
+                else{
+                    for(Camp c: camps){
+                        availableCampsForStudent.add(c);
+
+                    }
+                    
+                }
+                
                 
                 int counter = 1;
-                if(!camps.isEmpty()){
-                for(Camp c : camps){
+                if(!availableCampsForStudent.isEmpty()){
+                for(Camp c : availableCampsForStudent){
                 setCamp(c);
                 System.out.println("");
                 System.out.println(counter+")"+ "Camp Name: " + campInfo.getName());
 		System.out.println("Description: " + campInfo.getDescription());
 		System.out.println("Remaining slots: " + campInfo.getRemainingSlots());
+                System.out.println("Start Date: "+formatter.format(campInfo.getStartDate()));
+                System.out.println("End Date: "+formatter.format(campInfo.getEndDate()));
+                System.out.println("Registration Deadline: "+formatter.format(campInfo.getClosingDate()));
                 counter++;
                 }
                 }else{
                     System.out.println("There are no camps available at this moment.");
                 }
                 System.out.println("");
-	}
-        
-	
-	public void viewEnquiry() {
-		
-	}
-	
-	public void viewSuggestion() {
-		
-	}
-	
-	public void printCampParticipants() {
-		
-	}
-
-	
-	public void staffUI() {//Shows what staff would see for the camp (full info)
-		this.printCampInformation();
-		
 	}
 	
 	public void showRegisteredCamps(){
@@ -477,8 +554,6 @@ public class CampUI extends UI {
             else
                 System.out.println("You did not register for any camp.");
                 
-            
-            
         }
 
 	public void withdrawCampUI() {//Handles user input and output for withdrawing from a camp
