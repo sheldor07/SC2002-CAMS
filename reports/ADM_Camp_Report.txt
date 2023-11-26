@@ -1,0 +1,15 @@
+============================================
+           CAMP REPORT DETAILS              
+============================================
+Camp Name: ADM Camp
+Camp Location: dsad
+Camp Description: dsa
+Camp Start Date: Fri Aug 11 00:00:00 SGT 2023
+Camp End Date: Mon Aug 14 00:00:00 SGT 2023
+
+--------------------------------------------
+              PARTICIPANTS                  
+--------------------------------------------
+Student Name: KOH
+Student Role: Camp Committee
+--------------------------------------------

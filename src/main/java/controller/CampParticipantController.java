@@ -36,8 +36,11 @@ public class CampParticipantController {
    public CampParticipant getCommitteeByStudentId(int studentId){
        return campParticipantDatabase.getCommitteeByStudentId(studentId);
    }
-   
-   
+
+   public ArrayList<CampParticipant> getListByCampId(int campId){
+//        System.out.println("campId: " + campId);
+       return campParticipantDatabase.getListByCampId(campId);
+   }
    
    public boolean registerAsParticipant(User user, Camp camp) {
        

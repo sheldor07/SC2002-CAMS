@@ -20,7 +20,9 @@ public class StudentController {
     public StudentController(){
         studentDatabase = new StudentDatabase("student_list");
     }
-    
+    public String getStudentNameById(int id) {
+        return studentDatabase.getStudentById(id).getName();
+    }
      public Student getStudentById(int id){
             return studentDatabase.getStudentById(id);
         }
